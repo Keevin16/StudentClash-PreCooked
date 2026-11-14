@@ -105,11 +105,12 @@ def get_assignment(aid: int) -> Optional[dict]:
     return _row("SELECT * FROM assignments WHERE id = ?", (aid,))
 
 
-def list_assignments() -> List[dict]:
+def list_assignments(hide_team: str = "") -> List[dict]:
+    """With counts of submissions; `hide_team` leaves one team name out of them (the one-click demo)."""
     return _rows("""SELECT a.*, COUNT(s.id) AS submitted,
                            COALESCE(SUM(s.status = 'completed'), 0) AS completed
-                    FROM assignments a LEFT JOIN submissions s ON s.assignment_id = a.id
-                    GROUP BY a.id ORDER BY a.created_at DESC""")
+                    FROM assignments a LEFT JOIN submissions s ON s.assignment_id = a.id AND s.student_name != ?
+                    GROUP BY a.id ORDER BY a.created_at DESC""", (hide_team,))
 
 
 # ---------- submissions ----------

@@ -154,12 +154,15 @@ def test_professor_pages_are_open_without_a_password(monkeypatch):
     assert c.get("/api/prof/assignments").status_code == 200 and c.get("/api/prof/auth").json() == {"password": False}
 
 
-def test_demo_report_is_seeded_once(client):
+def test_demo_reports_are_seeded_once_and_demo_runs_are_hidden(client):
     from pythagoras.app import seed_demo_report
-    seed_demo_report()  # synthetic cases/ffnn/team1.json (startup may have added it already)
+    seed_demo_report()  # synthetic cases/ffnn/team*.json (startup may have added them already)
     assert not seed_demo_report()  # never twice
+    client.post("/api/demo")  # a one-click demo run: not shown to the professor
     login(client)
     a = next(x for x in client.get("/api/prof/assignments").json() if x["title"].startswith("Project 1 - A feed"))
-    sub = next(s for s in client.get(f"/api/prof/assignments/{a['id']}").json()["submissions"] if s["student_name"] == "Team_1")
-    rep = client.get(f"/api/prof/submissions/{sub['id']}").json()
-    assert rep["submission"]["status"] == "completed" and len(rep["report"]["topics"]) == 3
+    subs = client.get(f"/api/prof/assignments/{a['id']}").json()["submissions"]
+    assert sorted(s["student_name"] for s in subs) == ["Team_1", "Team_2"] and a["submitted"] == 2
+    for s in subs:
+        rep = client.get(f"/api/prof/submissions/{s['id']}").json()
+        assert rep["submission"]["status"] == "completed" and len(rep["report"]["topics"]) == 3

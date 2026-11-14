@@ -51,7 +51,7 @@ async def lifespan(_app):
     threading.Thread(target=_report_queue, args=(stop,), daemon=True, name="report-queue").start()
     try:
         if seed_demo_report():
-            log.info("demo report for %s added", DEMO_TEAM)
+            log.info("demo reports added")
     except Exception:
         log.exception("could not add the demo report")
     if voice.mode() == "local":  # load Whisper / Kokoro now, so the first interview starts without waiting
@@ -184,7 +184,7 @@ def _write_report(sid: int) -> None:
 
 @app.get("/api/assignments")
 def assignments():
-    return [_public_assignment(a) for a in db.list_assignments()]
+    return [_public_assignment(a) for a in db.list_assignments(hide_team=DEMO_STUDENT)]
 
 
 @app.post("/api/submissions")
@@ -237,9 +237,6 @@ def _demo_case() -> dict:
             "materials": [ffnn / "course" / "ffnn-notes.md"], "dir": ffnn}
 
 
-DEMO_TEAM = "Team_1"
-
-
 def _demo_assignment(case: dict) -> dict:
     same = [x for x in db.list_assignments() if x["title"] == case["title"]]
     # keep the one that already has a demo plan: an assignment with the same title (e.g. from scripts/smoke.py)
@@ -256,25 +253,31 @@ def _demo_assignment(case: dict) -> dict:
 
 
 def seed_demo_report() -> bool:
-    """A finished Team_1 interview with its report, so the professor pages have a complete example:
-    team1.json of the demo case (cases/ffnn/team1.json is synthetic; cases/pirelli is not in the repository)."""
+    """Finished example interviews with their reports, so the professor pages have complete examples: one per
+    team<N>.json of the demo case, shown as Team_<N> (cases/ffnn has synthetic ones; cases/pirelli is not in the
+    repository). Each team is added once. True when something was added."""
     case = _demo_case()
-    data = case["dir"] / "team1.json"
-    if not data.exists():
+    files = sorted(case["dir"].glob("team*.json"))
+    if not files:
         return False
     a = _demo_assignment(case)
-    if any(s["student_name"] == DEMO_TEAM for s in db.list_submissions(a["id"])):
-        return False
-    d = json.loads(data.read_text())
-    d["state"]["started_at"] = time.time() - 2 * 3600  # "this morning", whenever the demo runs
-    sub = db.create_submission(a["id"], DEMO_TEAM, "team1@university.edu")
-    folder = db.submission_dir(sub["id"])
-    folder.mkdir(parents=True, exist_ok=True)
-    for f in case["deliverable"]:
-        (folder / f.name).write_bytes(f.read_bytes())
-    db.update_submission(sub["id"], plan=d["plan"], state=d["state"], report=d["report"], flags=d["flags"],
-                         status="completed", completed_at=d["state"]["started_at"] + d["state"]["turns"][-1]["t_s"])
-    return True
+    have = {s["student_name"] for s in db.list_submissions(a["id"])}
+    added = False
+    for n, data in enumerate(files):
+        team = "Team_" + data.stem.removeprefix("team")
+        if team in have:
+            continue
+        d = json.loads(data.read_text())
+        d["state"]["started_at"] = time.time() - (2 + n) * 3600  # "this morning", whenever the demo runs
+        sub = db.create_submission(a["id"], team, f"{data.stem}@university.edu")
+        folder = db.submission_dir(sub["id"])
+        folder.mkdir(parents=True, exist_ok=True)
+        for f in case["deliverable"]:
+            (folder / f.name).write_bytes(f.read_bytes())
+        db.update_submission(sub["id"], plan=d["plan"], state=d["state"], report=d["report"], flags=d["flags"],
+                             status="completed", completed_at=d["state"]["started_at"] + d["state"]["turns"][-1]["t_s"])
+        added = True
+    return added
 
 
 @app.get("/api/demo")
@@ -442,7 +445,7 @@ def logout(response: Response):
 
 @app.get("/api/prof/assignments", dependencies=[Depends(prof)])
 def prof_assignments():
-    return [_public_assignment(a) for a in db.list_assignments()]
+    return [_public_assignment(a) for a in db.list_assignments(hide_team=DEMO_STUDENT)]
 
 
 @app.post("/api/prof/assignments", dependencies=[Depends(prof)])
@@ -465,7 +468,8 @@ def _assignment_or_404(aid: int) -> dict:
 @app.get("/api/prof/assignments/{aid}", dependencies=[Depends(prof)])
 def prof_assignment(aid: int):
     a = _assignment_or_404(aid)
-    subs = db.list_submissions(aid)
+    # the one-click demo interviews ("Demo team") stay in the database (their plan is reused) but not on these pages
+    subs = [s for s in db.list_submissions(aid) if s["student_name"] != DEMO_STUDENT]
     a = {**a, "submitted": len(subs), "completed": sum(s["status"] == "completed" for s in subs),
          "materials": db.list_files(db.assignment_dir(aid) / "materials")}
     return {"assignment": a, "submissions": [_public_sub(s) for s in subs]}

@@ -1,0 +1,679 @@
+{
+ "plan": {
+  "duration_s": 600,
+  "topics": [
+   {
+    "id": "init-backprop",
+    "title": "Initialisation and backpropagation",
+    "claim": "The report says the weights use Xavier initialisation with variance 1/n_in and biases at zero, and that backpropagation passes y-hat minus y back through the hidden layer with the chain rule (backward, lines 36-48).",
+    "anchor": "Report §2.2-2.3; mlp.py:21-26 (__init__) and mlp.py:35-46 (backward)",
+    "priority": "high",
+    "time_budget_s": 200,
+    "questions": [
+     {
+      "level": 2,
+      "question": "Walk me through your backward function. What does each line compute, and why is the output error simply y-hat minus y?",
+      "expected_points": [
+       "Sigmoid output with binary cross-entropy gives dL/dz2 = y-hat minus y",
+       "dW2 is dZ2 times H transposed, averaged over the batch",
+       "dZ1 multiplies W2 transposed times dZ2 by the sigmoid derivative H(1 - H)",
+       "Full-batch gradient descent update of all four parameters"
+      ]
+     },
+     {
+      "level": 3,
+      "question": "Look at line 23 of mlp.py, where W1 is created. If you ran exactly this code, what would the hidden units compute in the first epoch, and would they ever learn different features?",
+      "expected_points": [
+       "W1 is all zeros, so every hidden unit outputs sigmoid(0) = 0.5 at the start",
+       "The gradient of each hidden unit is scaled by its own W2 weight, which is random",
+       "So symmetry is broken only through the random W2",
+       "The code does not do what §2.3 says"
+      ]
+     },
+     {
+      "level": 4,
+      "question": "Your report says Xavier, the code uses zeros for W1. If all of W2 were zeros too, what would happen to training, and what does that tell you about why your network still works?",
+      "expected_points": [
+       "With both layers at zero, all hidden units get identical gradients and stay identical",
+       "The network would behave like a single hidden unit",
+       "It works only because W2 is random, by accident rather than design",
+       "The report and the code disagree and one of them must be fixed"
+      ]
+     },
+     {
+      "level": 5,
+      "question": "If you had to defend one initialisation choice for this network to your professor, which would it be and why, given that you use sigmoid in the hidden layer?",
+      "expected_points": [
+       "Xavier/Glorot suits sigmoid or tanh: keeps activation variance stable",
+       "He initialisation is meant for ReLU",
+       "Small random weights avoid saturating the sigmoid",
+       "Must actually be implemented, and verified (e.g. by checking hidden activations)"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "evaluation",
+    "title": "Evaluation, test set and overfitting",
+    "claim": "The report states 95.0% test accuracy, that the model generalises very well, and that it is not overfitting because the training loss keeps going down; the learning rate and the early-stopping epoch are both chosen on test accuracy.",
+    "anchor": "Report §3-4 (results table); mlp.py:55 (80/20 split), mlp.py:64-68 (test accuracy every 100 epochs, best epoch kept)",
+    "priority": "high",
+    "time_budget_s": 220,
+    "questions": [
+     {
+      "level": 2,
+      "question": "Explain how you split the data and how you picked the learning rate of 2.0 and the stopping epoch.",
+      "expected_points": [
+       "80/20 split: 320 training, 80 test points",
+       "Learning rates 0.1, 0.5, 1.0 and 2.0 compared on test accuracy",
+       "Every 100 epochs the test accuracy is computed and the best epoch is kept",
+       "No separate validation set"
+      ]
+     },
+     {
+      "level": 3,
+      "question": "You chose both the learning rate and the stopping epoch by looking at test accuracy. What does that do to the 95% you report?",
+      "expected_points": [
+       "The test set has been used for model selection, so it is no longer unseen data",
+       "The 95% is an optimistic estimate of generalisation",
+       "Selecting the best of many checkpoints on 80 points adds selection bias"
+      ]
+     },
+     {
+      "level": 4,
+      "question": "The report says the model is not overfitting because the training loss keeps going down. Is that evidence of no overfitting? What would you look at instead?",
+      "expected_points": [
+       "A falling training loss is expected even when overfitting",
+       "Overfitting shows as a gap between training and validation loss or accuracy",
+       "The drop from 95.0% to 93.8% is consistent with overfitting, not proof of noise",
+       "With 80 test points one point is 1.25%, so differences are noisy either way"
+      ]
+     },
+     {
+      "level": 5,
+      "question": "If you had to redo the evaluation so that your professor could trust the number, what exactly would you change, and what result would you expect?",
+      "expected_points": [
+       "Train / validation / test split, or cross-validation on the training part",
+       "Tune learning rate and stopping on validation only, report test once",
+       "Expect a somewhat lower, more honest test accuracy",
+       "Report variance across seeds or folds given the small dataset"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "activation-architecture",
+    "title": "Activation, learning rate and architecture choices",
+    "claim": "The sigmoid is used in the hidden layer because its derivative is simple; the learning rate is 2.0; the discussion states that deeper networks are always more accurate.",
+    "anchor": "Report §2.1 and §5; mlp.py:16-17, mlp.py:31, mlp.py:63 (lr=2.0)",
+    "priority": "medium",
+    "time_budget_s": 160,
+    "questions": [
+     {
+      "level": 2,
+      "question": "Why does this problem need a hidden layer with a non-linear activation, and why did you pick the sigmoid for it?",
+      "expected_points": [
+       "Two moons are not linearly separable",
+       "Without a non-linearity the network collapses to a linear model",
+       "Sigmoid chosen for its simple derivative",
+       "Output sigmoid gives a probability"
+      ]
+     },
+     {
+      "level": 3,
+      "question": "The sigmoid's derivative is at most 0.25. How does that connect to your need for a learning rate as large as 2.0?",
+      "expected_points": [
+       "Gradients through the hidden layer are scaled down by at most 0.25",
+       "Saturated units give near-zero gradients",
+       "A large learning rate compensates for small gradients",
+       "ReLU or tanh would give larger gradients"
+      ]
+     },
+     {
+      "level": 4,
+      "question": "Your discussion says deeper networks are always more accurate. On two moons with 320 training points, is that true? What could go wrong?",
+      "expected_points": [
+       "Not always: more parameters can overfit a small dataset",
+       "Deeper sigmoid networks suffer more from vanishing gradients",
+       "Capacity should match the problem; 16 units already fit the boundary",
+       "Needs validation evidence"
+      ]
+     },
+     {
+      "level": 5,
+      "question": "Compare sigmoid, tanh and ReLU for the hidden layer of this network. Which would you choose and how would you verify the choice?",
+      "expected_points": [
+       "Tanh is zero-centred, ReLU avoids saturation for positive inputs",
+       "Initialisation must match the activation (Xavier vs He)",
+       "Compare on validation loss and convergence speed with tuned learning rates",
+       "Report the trade-off honestly"
+      ]
+     }
+    ]
+   }
+  ],
+  "analysis": {
+   "summary": "A short report and a NumPy implementation of a one-hidden-layer MLP (16 sigmoid units) on a synthetic two-moons dataset, trained with full-batch gradient descent and binary cross-entropy. The forward and backward passes are correct and clearly explained. The weaknesses are in the parts that should justify the choices: the code does not implement the initialisation the report claims, the test set is used for model selection, and the overfitting argument and the discussion contain incorrect generalisations.",
+   "strengths": [
+    {
+     "text": "Correct derivation and implementation of backpropagation for sigmoid output with cross-entropy (y-hat minus y).",
+     "anchor": "Report §2.2; mlp.py:35-46"
+    },
+    {
+     "text": "Clear motivation for a hidden non-linear layer: the two moons are not linearly separable.",
+     "anchor": "Report §1"
+    },
+    {
+     "text": "Training and results are reported transparently, including the accuracy drop after the best epoch.",
+     "anchor": "Report §4, results table"
+    }
+   ],
+   "weak_spots": [
+    {
+     "text": "The report claims Xavier initialisation, but W1 is initialised to zeros; symmetry is broken only because W2 is random.",
+     "anchor": "Report §2.3; mlp.py:23 and mlp.py:25"
+    },
+    {
+     "text": "Learning rate and early-stopping epoch are both selected on the test set; there is no validation split, so 95.0% is optimistic.",
+     "anchor": "Report §3; mlp.py:55, mlp.py:64-68"
+    },
+    {
+     "text": "\"The training loss keeps going down, so no overfitting\" is not evidence; the 95.0 to 93.8% drop is dismissed as noise.",
+     "anchor": "Report §4"
+    },
+    {
+     "text": "Sigmoid in the hidden layer is justified only by its simple derivative; saturation and the need for lr = 2.0 are not discussed.",
+     "anchor": "Report §2.1; mlp.py:63"
+    },
+    {
+     "text": "\"Deeper networks are always more accurate\" is false as a general statement.",
+     "anchor": "Report §5"
+    },
+    {
+     "text": "The report cites backward at lines 36-48; it is at lines 35-46.",
+     "anchor": "Report §2.2"
+    }
+   ],
+   "objectives_coverage": [
+    "LO1 (forward propagation, non-linearity): covered. The need for a non-linear hidden layer is explained correctly.",
+    "LO2 (backpropagation): covered. Derivation and code are correct.",
+    "LO3 (initialisation, learning rate, architecture): partial. The initialisation in the code contradicts the report; the learning rate and activation choices are weakly justified.",
+    "LO4 (evaluation and overfitting): weak. Test set used for selection, no validation split, incorrect overfitting argument."
+   ]
+  }
+ },
+ "state": {
+  "topics": [
+   {
+    "id": "init-backprop",
+    "level": 5,
+    "current": 5,
+    "misses": 0,
+    "status": "closed",
+    "spent_s": 200
+   },
+   {
+    "id": "evaluation",
+    "level": 3,
+    "current": 4,
+    "misses": 2,
+    "status": "closed",
+    "spent_s": 130
+   },
+   {
+    "id": "activation-architecture",
+    "level": 5,
+    "current": 5,
+    "misses": 0,
+    "status": "closed",
+    "spent_s": 174
+   }
+  ],
+  "turns": [
+   {
+    "t_s": 0,
+    "move": {
+     "kind": "opening",
+     "topic_id": null,
+     "level": 0,
+     "intent": ""
+    },
+    "question": "Hi, I'm Pythagoras, and this is a short chat about your own project, whoever worked on a part answers it. Could you tell me in a few sentences what you built, and the decision you're most proud of?",
+    "answer": "We implemented a one hidden layer network in NumPy for the two moons data, forward, backward and the training loop, all by hand. The decision we're proudest of is deriving the backward pass on paper first and checking it with finite differences before trusting the training curves.",
+    "answer_s": 22,
+    "evaluation": null
+   },
+   {
+    "t_s": 36,
+    "move": {
+     "kind": "ask",
+     "topic_id": "init-backprop",
+     "level": 2,
+     "intent": ""
+    },
+    "question": "Let's start from how your network starts out, section two point three. Walk me through how you set the initial weights and biases of both layers, and why.",
+    "answer": "The biases start at zero and the weights are small random values, Xavier, so the activations don't blow up or vanish at the start.",
+    "answer_s": 14,
+    "evaluation": {
+     "verdict": "partial",
+     "covered_points": [
+      "Xavier/Glorot suits sigmoid or tanh: keeps activation variance stable"
+     ],
+     "missing_points": [
+      "W1 is in fact all zeros in mlp.py:23",
+      "Only W2 is random"
+     ],
+     "note": "Restates the report's description but does not check it against the code."
+    }
+   },
+   {
+    "t_s": 68,
+    "move": {
+     "kind": "ask",
+     "topic_id": "init-backprop",
+     "level": 3,
+     "intent": ""
+    },
+    "question": "So the report says Xavier. Look at line twenty-three of mlp.py, where W1 is created. If you ran exactly this code, what would the hidden units compute in the first epoch, and would they ever learn different features?",
+    "answer": "Line twenty-three is np.zeros, so W1 is actually zero, that's a mistake against the report. Every hidden unit outputs sigmoid of zero, so zero point five. They still become different because W2 is random: the error that goes back to each hidden unit is multiplied by its own W2 weight, so each row of W1 gets a different gradient.",
+    "answer_s": 27,
+    "evaluation": {
+     "verdict": "solid",
+     "covered_points": [
+      "W1 is all zeros, so every hidden unit outputs sigmoid(0) = 0.5 at the start",
+      "The gradient of each hidden unit is scaled by its own W2 weight, which is random",
+      "So symmetry is broken only through the random W2",
+      "The code does not do what §2.3 says"
+     ],
+     "missing_points": [],
+     "note": "Spots the mismatch with the report and explains symmetry breaking through W2."
+    }
+   },
+   {
+    "t_s": 118,
+    "move": {
+     "kind": "ask",
+     "topic_id": "init-backprop",
+     "level": 4,
+     "intent": ""
+    },
+    "question": "Right, W2 breaks the tie. If W2 were all zeros as well, what would happen to training, and what does that tell you about why your network still works?",
+    "answer": "Then in the first step W1 gets no gradient at all, and W2 gets the same gradient in every position, because all hidden outputs are zero point five. So W2 stays identical across units, and from then on every hidden unit gets exactly the same update. The sixteen units behave like one. Our network works only because W2 happened to be random, not because of the initialisation we described.",
+    "answer_s": 30,
+    "evaluation": {
+     "verdict": "solid",
+     "covered_points": [
+      "With both layers at zero, all hidden units get identical gradients and stay identical",
+      "The network would behave like a single hidden unit",
+      "It works only because W2 is random, by accident rather than design",
+      "The report and the code disagree and one of them must be fixed"
+     ],
+     "missing_points": [],
+     "note": "Follows the symmetry argument to the end and draws the right conclusion about the code."
+    }
+   },
+   {
+    "t_s": 170,
+    "move": {
+     "kind": "ask",
+     "topic_id": "init-backprop",
+     "level": 5,
+     "intent": ""
+    },
+    "question": "So it works by accident. If you had to defend one initialisation choice for this network, which would it be and why, given the sigmoid in the hidden layer?",
+    "answer": "I'd use Xavier, because we have sigmoid.",
+    "answer_s": 6,
+    "evaluation": {
+     "verdict": "partial",
+     "covered_points": [
+      "Xavier/Glorot suits sigmoid or tanh: keeps activation variance stable"
+     ],
+     "missing_points": [
+      "He initialisation is meant for ReLU",
+      "Small random weights avoid saturating the sigmoid",
+      "Must actually be implemented, and verified"
+     ],
+     "note": "Right choice, no justification."
+    }
+   },
+   {
+    "t_s": 188,
+    "move": {
+     "kind": "probe",
+     "topic_id": "init-backprop",
+     "level": 5,
+     "intent": ""
+    },
+    "question": "Say a bit more: what goes wrong with the sigmoid if the initial weights are too large, and how would you check that your fix actually works?",
+    "answer": "If the weights are large, the pre-activations are large and the sigmoid saturates near zero or one, where the derivative is almost zero, so nothing learns. Xavier keeps the variance around one over n in. He initialisation is twice that and is meant for ReLU. To check it, I would actually change line twenty-three and plot the histogram of the hidden activations at epoch zero: they should be spread out, not stuck at zero point five or at the ends.",
+    "answer_s": 31,
+    "evaluation": {
+     "verdict": "solid",
+     "covered_points": [
+      "Xavier/Glorot suits sigmoid or tanh: keeps activation variance stable",
+      "He initialisation is meant for ReLU",
+      "Small random weights avoid saturating the sigmoid",
+      "Must actually be implemented, and verified (e.g. by checking hidden activations)"
+     ],
+     "missing_points": [],
+     "note": "Justifies the choice and proposes a concrete check."
+    }
+   },
+   {
+    "t_s": 236,
+    "move": {
+     "kind": "next_topic",
+     "topic_id": "evaluation",
+     "level": 2,
+     "intent": ""
+    },
+    "question": "Let's move on to evaluation, section three. Explain how you split the data and how you picked the learning rate of two and the stopping epoch.",
+    "answer": "Three hundred twenty points for training and eighty for test, after a random shuffle. We tried four learning rates and every hundred epochs we computed the test accuracy and kept the best one.",
+    "answer_s": 15,
+    "evaluation": {
+     "verdict": "solid",
+     "covered_points": [
+      "80/20 split: 320 training, 80 test points",
+      "Learning rates 0.1, 0.5, 1.0 and 2.0 compared on test accuracy",
+      "Every 100 epochs the test accuracy is computed and the best epoch is kept"
+     ],
+     "missing_points": [
+      "No separate validation set"
+     ],
+     "note": "Describes the procedure correctly."
+    }
+   },
+   {
+    "t_s": 268,
+    "move": {
+     "kind": "ask",
+     "topic_id": "evaluation",
+     "level": 3,
+     "intent": ""
+    },
+    "question": "So everything was chosen on test accuracy. What does that do to the ninety-five percent you report?",
+    "answer": "It makes it a bit less reliable, I guess.",
+    "answer_s": 5,
+    "evaluation": {
+     "verdict": "partial",
+     "covered_points": [
+      "The 95% is an optimistic estimate of generalisation"
+     ],
+     "missing_points": [
+      "The test set has been used for model selection, so it is no longer unseen data",
+      "Selection bias from picking the best of many checkpoints"
+     ],
+     "note": "Senses a problem but does not name it."
+    }
+   },
+   {
+    "t_s": 284,
+    "move": {
+     "kind": "probe",
+     "topic_id": "evaluation",
+     "level": 3,
+     "intent": ""
+    },
+    "question": "Less reliable in which direction, and why exactly?",
+    "answer": "Too high. We picked the learning rate and the epoch that looked best on those eighty points, so the test set was part of the tuning. It's not unseen data anymore, and taking the maximum of fifty checkpoints adds a bit of luck on top.",
+    "answer_s": 19,
+    "evaluation": {
+     "verdict": "solid",
+     "covered_points": [
+      "The test set has been used for model selection, so it is no longer unseen data",
+      "The 95% is an optimistic estimate of generalisation",
+      "Selecting the best of many checkpoints on 80 points adds selection bias"
+     ],
+     "missing_points": [],
+     "note": "Names the leakage and the selection bias once pushed."
+    }
+   },
+   {
+    "t_s": 318,
+    "move": {
+     "kind": "ask",
+     "topic_id": "evaluation",
+     "level": 4,
+     "intent": ""
+    },
+    "question": "Right, the test set was used for tuning. The report also says the model is not overfitting because the training loss keeps going down. Is that evidence? What would you look at instead?",
+    "answer": "I think it's fine, if the training loss goes down the model is still learning, so it's not overfitting.",
+    "answer_s": 8,
+    "evaluation": {
+     "verdict": "weak",
+     "covered_points": [],
+     "missing_points": [
+      "A falling training loss is expected even when overfitting",
+      "Overfitting shows as a gap between training and validation loss or accuracy",
+      "The drop from 95.0% to 93.8% is consistent with overfitting, not proof of noise",
+      "With 80 test points one point is 1.25%, so differences are noisy either way"
+     ],
+     "note": "Repeats the report's incorrect argument."
+    }
+   },
+   {
+    "t_s": 338,
+    "move": {
+     "kind": "scaffold",
+     "topic_id": "evaluation",
+     "level": 4,
+     "intent": ""
+    },
+    "question": "Look at your results table between epoch forty-one hundred and forty-nine hundred: the training loss improves while test accuracy drops. What does a model that memorises the training data do to those two numbers?",
+    "answer": "The training loss would keep improving anyway. But I'd still say the drop is noise, it's only one point.",
+    "answer_s": 11,
+    "evaluation": {
+     "verdict": "weak",
+     "covered_points": [
+      "A falling training loss is expected even when overfitting"
+     ],
+     "missing_points": [
+      "Overfitting shows as a gap between training and validation",
+      "The drop is consistent with overfitting, not proof of noise"
+     ],
+     "note": "Concedes one point but keeps dismissing the drop as noise."
+    }
+   },
+   {
+    "t_s": 366,
+    "move": {
+     "kind": "next_topic",
+     "topic_id": "activation-architecture",
+     "level": 2,
+     "intent": ""
+    },
+    "question": "Let's move to your model choices, section two point one. Why does this problem need a hidden layer with a non-linear activation, and why the sigmoid?",
+    "answer": "The moons can't be separated by a line, and stacking linear layers is still linear, so we need a non-linearity. We chose sigmoid because its derivative is just sigma times one minus sigma, and the output is a probability anyway.",
+    "answer_s": 18,
+    "evaluation": {
+     "verdict": "solid",
+     "covered_points": [
+      "Two moons are not linearly separable",
+      "Without a non-linearity the network collapses to a linear model",
+      "Sigmoid chosen for its simple derivative",
+      "Output sigmoid gives a probability"
+     ],
+     "missing_points": [],
+     "note": "Correct and concise."
+    }
+   },
+   {
+    "t_s": 398,
+    "move": {
+     "kind": "ask",
+     "topic_id": "activation-architecture",
+     "level": 3,
+     "intent": ""
+    },
+    "question": "So a simple derivative. The sigmoid's derivative is at most zero point two five. How does that connect to your need for a learning rate as large as two?",
+    "answer": "Every time the gradient passes through a sigmoid it gets multiplied by at most a quarter, and much less when the unit is saturated. So the updates to W1 are small and a big learning rate makes up for it. With ReLU or tanh the gradients are larger and two would probably diverge.",
+    "answer_s": 22,
+    "evaluation": {
+     "verdict": "solid",
+     "covered_points": [
+      "Gradients through the hidden layer are scaled down by at most 0.25",
+      "Saturated units give near-zero gradients",
+      "A large learning rate compensates for small gradients",
+      "ReLU or tanh would give larger gradients"
+     ],
+     "missing_points": [],
+     "note": "Connects the derivative bound to the learning rate correctly."
+    }
+   },
+   {
+    "t_s": 434,
+    "move": {
+     "kind": "ask",
+     "topic_id": "activation-architecture",
+     "level": 4,
+     "intent": ""
+    },
+    "question": "Your discussion says deeper networks are always more accurate. On two moons with three hundred twenty training points, is that true? What could go wrong?",
+    "answer": "No, that sentence is wrong. With so few points a deeper network has many more parameters and can overfit, and with sigmoids the gradient shrinks by a quarter at every layer, so the first layers would barely learn. Sixteen units already draw the boundary; we would only add depth if a validation curve showed underfitting.",
+    "answer_s": 25,
+    "evaluation": {
+     "verdict": "solid",
+     "covered_points": [
+      "Not always: more parameters can overfit a small dataset",
+      "Deeper sigmoid networks suffer more from vanishing gradients",
+      "Capacity should match the problem; 16 units already fit the boundary",
+      "Needs validation evidence"
+     ],
+     "missing_points": [],
+     "note": "Rejects their own claim with the right arguments."
+    }
+   },
+   {
+    "t_s": 474,
+    "move": {
+     "kind": "ask",
+     "topic_id": "activation-architecture",
+     "level": 5,
+     "intent": ""
+    },
+    "question": "So depth needs evidence. Compare sigmoid, tanh and ReLU for the hidden layer of this network: which would you choose, and how would you verify the choice?",
+    "answer": "Tanh is zero-centred, so with Xavier it would probably train faster than sigmoid here. ReLU doesn't saturate for positive inputs but can have dead units and needs He initialisation. I'd pick tanh, then compare all three on a validation split with the learning rate tuned for each, looking at validation loss and epochs to converge, over a few seeds.",
+    "answer_s": 29,
+    "evaluation": {
+     "verdict": "solid",
+     "covered_points": [
+      "Tanh is zero-centred, ReLU avoids saturation for positive inputs",
+      "Initialisation must match the activation (Xavier vs He)",
+      "Compare on validation loss and convergence speed with tuned learning rates",
+      "Report the trade-off honestly"
+     ],
+     "missing_points": [],
+     "note": "Balanced comparison with a sound way to verify it."
+    }
+   },
+   {
+    "t_s": 540,
+    "move": {
+     "kind": "wrap_up",
+     "topic_id": null,
+     "level": 0,
+     "intent": ""
+    },
+    "question": "Thank you all, that's the end of our conversation. Your professor will receive a summary of what we discussed. Good luck with your project!",
+    "answer": null,
+    "answer_s": null,
+    "evaluation": null
+   }
+  ],
+  "started_at": 1763113800.0,
+  "finished": true
+ },
+ "report": {
+  "summary": "Team_2 owns its project: they found on their own that mlp.py initialises W1 to zeros although the report says Xavier, followed the symmetry argument to the end, and justified the initialisation and the activation with concrete checks. They also rejected their own claim that deeper networks are always more accurate. The weak spot is evaluation: they recognised the test-set leakage only after a follow-up, and even after a hint they kept the report's argument that a falling training loss rules out overfitting, dismissing the accuracy drop as noise. Start the oral exam from the evaluation protocol.",
+  "ownership": "strong",
+  "topics": [
+   {
+    "topic_id": "init-backprop",
+    "title": "Initialisation and backpropagation",
+    "level_reached": 5,
+    "assessment": "Started by restating the report, then spotted on their own that the code sets W1 to zeros, explained how the random W2 breaks the symmetry and what would happen without it. After a follow-up, justified Xavier for sigmoid units and proposed checking the hidden activations.",
+    "evidence": [
+     {
+      "quote": "Line twenty-three is np.zeros, so W1 is actually zero, that's a mistake against the report.",
+      "t_s": 68,
+      "note": "Checks the report against the code."
+     },
+     {
+      "quote": "The sixteen units behave like one.",
+      "t_s": 118,
+      "note": "Complete symmetry argument at the Analyze level."
+     },
+     {
+      "quote": "plot the histogram of the hidden activations at epoch zero",
+      "t_s": 188,
+      "note": "Concrete way to verify the fix."
+     }
+    ]
+   },
+   {
+    "topic_id": "evaluation",
+    "title": "Evaluation, test set and overfitting",
+    "level_reached": 3,
+    "assessment": "Described the split correctly and, after a follow-up, named the test-set leakage and the selection bias. On overfitting they repeated the report's argument and, even after a hint pointing to their own results table, dismissed the accuracy drop as noise.",
+    "evidence": [
+     {
+      "quote": "It makes it a bit less reliable, I guess.",
+      "t_s": 268,
+      "note": "Vague at first."
+     },
+     {
+      "quote": "the test set was part of the tuning. It's not unseen data anymore",
+      "t_s": 284,
+      "note": "Recognises leakage after a follow-up."
+     },
+     {
+      "quote": "I'd still say the drop is noise, it's only one point.",
+      "t_s": 338,
+      "note": "Keeps the incorrect overfitting argument after a hint."
+     }
+    ]
+   },
+   {
+    "topic_id": "activation-architecture",
+    "title": "Activation, learning rate and architecture choices",
+    "level_reached": 5,
+    "assessment": "Linked the sigmoid's derivative bound to the learning rate of 2.0, rejected the report's claim that deeper networks are always more accurate, and compared sigmoid, tanh and ReLU with a sound verification plan.",
+    "evidence": [
+     {
+      "quote": "Every time the gradient passes through a sigmoid it gets multiplied by at most a quarter",
+      "t_s": 398,
+      "note": "Correct at the Apply level."
+     },
+     {
+      "quote": "No, that sentence is wrong.",
+      "t_s": 434,
+      "note": "Corrects their own report."
+     },
+     {
+      "quote": "compare all three on a validation split with the learning rate tuned for each",
+      "t_s": 474,
+      "note": "Sound comparison at the Evaluate level."
+     }
+    ]
+   }
+  ],
+  "strengths": [
+   "Checks the report against the code and finds the initialisation mismatch unprompted",
+   "Complete reasoning on symmetry breaking and on the sigmoid's gradient",
+   "Corrects their own claim about deeper networks",
+   "Proposes concrete checks (activation histograms, validation comparisons)"
+  ],
+  "concerns": [
+   "Does not see that a falling training loss is no evidence against overfitting, even after a hint",
+   "Recognised the test-set leakage only after a follow-up",
+   "The report still claims Xavier while the code uses zeros: the deliverable was not corrected"
+  ],
+  "suggested_questions": [
+   "Draw the training and validation curves you would expect if the model were overfitting. Where would epoch 4100 be?",
+   "How would you change mlp.py so that no decision is taken on the test set?",
+   "With 80 test points, how large must a difference in accuracy be before you stop calling it noise?"
+  ],
+  "unverified_quotes": []
+ },
+ "flags": []
+}
