@@ -328,6 +328,8 @@ textarea::placeholder{color:var(--t3)}
 .upload-grid{align-items:stretch}
 .upload-grid>div:first-child{display:flex;flex-direction:column}.upload-grid #form-card{flex:1}
 .right-stack .preview-card{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
-.right-stack .preview-card .mini-orb{display:none}
-.right-stack .preview-card blockquote{font-size:24px}
+
 .upload-grid #form-card{display:flex;flex-direction:column}.upload-grid #submit-form{flex:1;display:flex;flex-direction:column}.upload-grid #submit-btn{margin-top:auto}
+.right-stack .preview-card .mini-orb{position:absolute;right:28px;top:50%;transform:translateY(-50%);margin:0}
+.right-stack .preview-card blockquote{padding-right:72px}
+@media(max-width:1549px){.right-stack .preview-card blockquote{font-size:22px}}
