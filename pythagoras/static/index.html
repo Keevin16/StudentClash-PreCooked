@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111714">
+  <title>Pythagoras — Your project, your voice.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/room.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar"><a href="/" class="brand"><span class="brand-icon">g<span>✳</span></span>pythagoras<span class="brand-dot">.</span></a>
+    <div class="workspace"><span class="workspace-icon">G</span><div>AI oral assessment<small>Team workspace</small></div></div>
+    <div class="nav-label">WORKSPACE</div>
+    <nav><a class="nav-item active" href="/"><span>▦</span> My project <i>01</i></a>
+      <span class="nav-item off"><span>◉</span> Interview <i>02</i></span></nav>
+    <div class="sidebar-bottom"><div class="sidebar-note"><span>✧</span><strong>Reasoning matters.</strong><p>A conversation about your work,<br>one question at a time.</p></div>
+      <div class="profile"><div class="avatar small">YOU</div><div>Your team<small>Team space</small></div></div></div></aside>
+  <main>
+    <header class="topbar"><div id="breadcrumb">Workspace <span>/</span> New project</div><div class="top-right"><span class="status-dot"></span><span>Pythagoras never grades</span><span class="divider"></span><a href="/prof/login">Professor ↗</a></div></header>
+    <section class="view">
+      <div class="page-intro"><div class="eyebrow"><span></span> FROM YOUR WORK TO A CONVERSATION</div>
+        <h1>Your project.<br><span>Your voice.</span></h1>
+        <p>Upload what your team handed in and talk through your choices together.<br>Pythagoras guides you in a short conversation built on your own project: whoever worked on a part answers it.</p></div>
+      <div class="steps"><div class="step current"><b>1</b><span>Upload your project</span></div><div class="step-line"></div><div class="step"><b>2</b><span>Meet Pythagoras</span></div><div class="step-line"></div><div class="step"><b>3</b><span>Your professor gets the team summary</span></div></div>
+
+      <div class="upload-grid">
+        <div>
+          <div class="panel upload-panel" id="form-card">
+            <div class="panel-heading"><div><h2>Where do we start?</h2><p>Your team's deliverable, for the assignment you are handing in.</p></div><span class="tiny-tag">01 / PROJECT</span></div>
+            <form id="submit-form" novalidate>
+              <div class="field"><label for="assignment">ASSIGNMENT</label><div id="assignment-wrap"><div class="skeleton" style="height:42px"></div></div></div>
+              <div class="row-2">
+                <div class="field"><label for="name">TEAM NAME</label><input type="text" id="name" name="name" autocomplete="organization" placeholder="Team_1" required></div>
+                <div class="field"><label for="email">TEAM CONTACT EMAIL</label><input type="email" id="email" name="email" autocomplete="email" placeholder="team1@university.edu" required></div>
+              </div>
+              <div class="drop-zone" id="dropzone" tabindex="0" role="button" aria-label="Add files">
+                <span class="upload-symbol">↥</span><strong>Drag your project here</strong><span>or <em>choose files</em> from your computer</span><small>PDF, Markdown, code, notebooks · several files allowed</small>
+                <input type="file" id="files" multiple hidden>
+              </div>
+              <div class="chips" id="chips"></div>
+              <label class="consent"><input type="checkbox" checked disabled><span>I know I will talk with an AI. The audio is processed on this computer; my answers and my deliverable are sent to the AI provider to prepare and run the conversation. The AI never assigns a grade.</span></label>
+              <div id="form-error" class="error hidden" role="alert"></div>
+              <button class="primary full" id="submit-btn" type="submit">Prepare my interview <span>↗</span></button>
+            </form>
+          </div>
+
+          <div class="panel upload-panel hidden" id="success-card">
+            <div class="success-mark">✓</div>
+            <h2>You're all set</h2>
+            <p class="lede" id="success-msg"></p>
+            <div class="notice warn hidden" id="direct-link">
+              <strong>Email isn't configured on this server</strong>
+              Open your interview directly with this personal link:
+              <div class="copy-row"><input type="text" id="invite-url" readonly><button class="btn" id="copy-invite" type="button">Copy</button></div>
+              <div style="margin-top:12px"><a class="primary" id="open-invite" href="#">Open my interview <span>→</span></a></div>
+            </div>
+            <p style="margin:22px 0 0"><button class="secondary" id="again" type="button">Submit another project</button></p>
+          </div>
+        </div>
+
+        <div class="right-stack">
+          <article class="preview-card"><div class="preview-top"><span class="tiny-tag">A PREVIEW OF THE CONVERSATION</span><span class="sparkle">✳</span></div><div class="mini-orb"></div><blockquote>“Behind every choice<br>there is a reason.<br>Let's start from yours.”</blockquote><div class="preview-bottom"><span class="status-dot"></span> Pythagoras · Your AI interviewer</div></article>
+          <article class="demo-card" id="demo-card"><div class="demo-heading"><span class="file-icon">▤</span><span class="tiny-tag">READY TO TRY</span></div><h3 id="demo-headline">A ready-made project.</h3>
+            <p id="demo-blurb">A project and its course material, already loaded. Nothing to fill in.</p>
+            <div class="demo-meta"><span id="demo-docs">Documents ready</span><span>About 10 minutes</span></div>
+            <button id="sample-button" type="button"><span id="demo-cta">Use the demo case</span> <span>→</span></button>
+            <div id="demo-error" class="error hidden" role="alert"></div></article>
+        </div>
+      </div>
+      <footer class="page-footer"><span>✧ No automatic grade. Your professor stays at the centre.</span><span>Made to understand, together.</span></footer>
+    </section>
+  </main>
+</div>
+<script src="/static/app.js"></script>
+<script src="/static/index.js"></script>
+</body>
+</html>

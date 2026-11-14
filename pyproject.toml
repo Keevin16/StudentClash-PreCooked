@@ -1,0 +1,21 @@
+[project]
+name = "pythagoras"
+version = "0.4.0"
+description = "AI oral assessment: a 1-on-1 voice interview on the student's own deliverable, report for the professor"
+requires-python = ">=3.11"  # the optional local voice (MLX) needs 3.11 or 3.12
+dependencies = ["anthropic>=2.6", "google-genai>=3", "pydantic>=2", "fastapi>=0.115", "uvicorn[standard]", "python-multipart"]
+
+[project.optional-dependencies]
+# Natural local voice on Apple Silicon (Whisper MLX + Kokoro + Silero VAD + Smart Turn). Needs: brew install espeak-ng
+voice = ["numpy", "mlx-whisper>=0.4", "kokoro>=0.9.4", "soundfile>=0.13", "silero-vad>=6", "onnxruntime>=1.20",
+         "transformers<5", "huggingface_hub"]
+dev = ["pytest", "httpx", "numpy"]
+
+[tool.setuptools.packages.find]
+include = ["pythagoras*"]
+
+[tool.setuptools.package-data]
+pythagoras = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

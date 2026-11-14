@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pythagoras · Assignment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner">
+    <a class="brand" href="/prof"><span class="brand-icon">g<span>✳</span></span><span class="brand-word">pythagoras<span class="brand-dot">.</span></span><span class="brand-tag">Professor</span></a>
+    <span class="spacer"></span>
+    <a class="btn ghost sm" href="/prof">Assignments</a>
+    <button class="btn sm" id="logout">Sign out</button>
+  </div></header>
+
+  <main>
+    <div class="crumbs"><a href="/prof">Assignments</a><span class="sep">›</span><span id="crumb-title">…</span></div>
+    <div class="page-head">
+      <div>
+        <div class="eyebrow" id="a-course"></div>
+        <h1 id="a-title"><span class="skeleton" style="display:inline-block;width:280px;height:36px"></span></h1>
+        <p class="muted" id="a-desc"></p>
+      </div>
+      <button class="btn sm" id="share-btn" title="Copy the student page link">🔗 Copy student link</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="card stat"><div class="n" id="st-sub">–</div><div class="l">Deliverables submitted</div></div>
+      <div class="card stat"><div class="n" id="st-done" style="color:var(--green)">–</div><div class="l">AI assessments completed</div></div>
+      <div class="card stat"><div class="n" id="st-pend" style="color:var(--amber)">–</div><div class="l">Waiting for the team</div></div>
+    </div>
+
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="Search by name or email…" aria-label="Search">
+      <span class="spacer" style="flex:1"></span>
+      <button class="btn ghost sm" id="refresh">↻ Refresh</button>
+    </div>
+    <div id="table-box"><div class="card skeleton" style="height:220px"></div></div>
+  </main>
+
+  <script src="/static/app.js"></script>
+  <script src="/static/prof-assignment.js"></script>
+</body>
+</html>

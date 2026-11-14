@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pythagoras · Assessment report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner">
+    <a class="brand" href="/prof"><span class="brand-icon">g<span>✳</span></span><span class="brand-word">pythagoras<span class="brand-dot">.</span></span><span class="brand-tag">Professor</span></a>
+    <span class="spacer"></span>
+    <a class="btn ghost sm" href="/prof">Assignments</a>
+    <button class="btn sm" id="logout">Sign out</button>
+  </div></header>
+
+  <main>
+    <div class="crumbs no-print"><a href="/prof">Assignments</a><span class="sep">›</span><a id="crumb-a" href="#">…</a><span class="sep">›</span><span id="crumb-s">…</span></div>
+    <div id="root"><div class="card skeleton" style="height:140px"></div><div class="card skeleton" style="height:320px;margin-top:20px"></div></div>
+  </main>
+
+  <script src="/static/app.js"></script>
+  <script src="/static/prof-report.js"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pythagoras · Assignments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="topbar"><div class="topbar-inner">
+    <a class="brand" href="/prof"><span class="brand-icon">g<span>✳</span></span><span class="brand-word">pythagoras<span class="brand-dot">.</span></span><span class="brand-tag">Professor</span></a>
+    <span class="spacer"></span>
+    <a class="btn ghost sm" href="/prof">Assignments</a>
+    <button class="btn sm" id="logout">Sign out</button>
+  </div></header>
+
+  <main>
+    <div class="page-head">
+      <div>
+        <h1>Assignments</h1>
+        <p class="muted">Open an assignment to see every deliverable and its AI assessment.</p>
+      </div>
+      <button class="btn primary" id="new-btn">＋ New assignment</button>
+    </div>
+    <div id="list" class="grid-cards">
+      <div class="card skeleton" style="height:180px"></div>
+      <div class="card skeleton" style="height:180px"></div>
+      <div class="card skeleton" style="height:180px"></div>
+    </div>
+  </main>
+
+  <div class="modal-backdrop hidden" id="modal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-head"><h2 id="modal-title">New assignment</h2><button class="btn ghost sm" id="close-modal" aria-label="Close">✕</button></div>
+      <form id="new-form">
+        <div class="field">
+          <label for="title">Title</label>
+          <input type="text" id="title" required placeholder="Final project: ML pipeline">
+        </div>
+        <div class="field">
+          <label for="course">Course</label>
+          <input type="text" id="course" placeholder="Machine Learning 2026">
+        </div>
+        <div class="field">
+          <label for="description">Description</label>
+          <textarea id="description" rows="3" placeholder="What students had to build or write"></textarea>
+        </div>
+        <div class="field">
+          <label for="objectives">Learning objectives</label>
+          <textarea id="objectives" rows="4" placeholder="One per line, e.g.&#10;Choose and justify an evaluation metric&#10;Explain the trade-offs of the model"></textarea>
+          <div class="hint">Pythagoras uses them to decide what to ask about.</div>
+        </div>
+        <div class="field">
+          <label for="materials">Course materials <span class="faint">(optional)</span></label>
+          <input type="file" id="materials" multiple>
+          <div class="hint">Syllabus, lecture notes, slides…</div>
+        </div>
+        <div id="new-error" class="notice error hidden" style="margin-bottom:14px"></div>
+        <div class="modal-foot">
+          <button type="button" class="btn ghost" id="cancel-modal">Cancel</button>
+          <button type="submit" class="btn primary" id="create-btn">Create assignment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+  <script src="/static/prof.js"></script>
+</body>
+</html>
