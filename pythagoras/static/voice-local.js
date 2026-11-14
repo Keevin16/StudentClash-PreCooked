@@ -4,7 +4,7 @@
 class LocalVoice {
   constructor(token, handlers) {
     this.token = token; this.on = handlers;           // onSpeechStart, onTurnEnd, onTranscript, onEmpty, onError
-    this.gen = 0; this.epoch = 0; this.sources = []; this.cache = new Map();
+    this.gen = 0; this.epoch = 0; this.sources = []; this.cache = new Map(); this.speaking = 0; this.spoken = false;
     this.connected = false; this.capturing = false; this.closed = false;
   }
 
@@ -90,9 +90,12 @@ class LocalVoice {
     }
   }
 
-  // Fetch lines we know we will say (acknowledgements), so they play with zero delay.
+  // Fetch lines we know we will say (acknowledgements), so they play with zero delay. Only while Pythagoras is
+  // silent: the server synthesizes one sentence at a time, so a preload during a line stalls that line mid-speech.
   async preload(texts) {
     for (const text of texts) {
+      while ((this.speaking || !this.spoken) && !this.closed) await new Promise(r => setTimeout(r, 150));   // after the first line
+      if (this.closed) return;
       if (this.cache.has(text)) continue;
       const chunks = [];
       try { await this._fetch(text, async c => { chunks.push(c); }); this.cache.set(text, chunks); } catch { /* played uncached */ }
@@ -101,6 +104,11 @@ class LocalVoice {
 
   // Resolves when the line has finished playing (or was interrupted). onStart fires at the first sound.
   async speak(text, onStart) {
+    this.speaking++;
+    try { return await this._speak(text, onStart); } finally { this.speaking--; this.spoken = true; }
+  }
+
+  async _speak(text, onStart) {
     this.stop();
     const gen = ++this.gen, ctx = this.ctx;
     this.abort = new AbortController();
