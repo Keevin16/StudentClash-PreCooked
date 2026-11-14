@@ -20,11 +20,11 @@ def check() -> None:
 
 
 def seed() -> None:
-    """A demo assignment so the student page is not empty (plus the Team_1 Pirelli report when that case is here)."""
+    """A demo assignment so the student page is not empty (plus a finished Team_1 report)."""
     from . import db
     from .app import seed_demo_report
     if seed_demo_report():
-        print("added the Team_1 Pirelli report")
+        print("added the Team_1 demo report")
     if any(a["title"] == "Final project" for a in db.list_assignments()):
         print("demo assignment already there")
         return

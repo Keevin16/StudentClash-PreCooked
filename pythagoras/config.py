@@ -31,6 +31,9 @@ LANGUAGE_NAME = {"it": "Italian", "en": "English"}.get(LANGUAGE, LANGUAGE)
 VOICE = _env("PYTHAGORAS_VOICE", "auto")  # auto (local models if installed, else the browser's speech) | local | browser
 CAMERA = _env("PYTHAGORAS_CAMERA", "1") == "1"  # webcam on and visible during the interview; nothing is recorded or sent
 SPECULATE = _env("PYTHAGORAS_SPECULATE", "1") == "1"  # phrase the "solid answer" follow-up while the judge works
+# demo rules (engine._demo_rule): a good first answer on the weights topic climbs to level 3; "I don't know"
+# gets one retry, a second one moves on. On for now; PYTHAGORAS_DEMO_RULES=0 turns them off.
+DEMO_RULES = _env("PYTHAGORAS_DEMO_RULES", "1") == "1"
 
 # Two roles: the reasoner (plan, Bloom judgement of each answer, report) and the fast talker.
 GEMINI_API_KEY = _env("GEMINI_API_KEY")

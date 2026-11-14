@@ -8,6 +8,8 @@ Rules (deterministic, the LLM only judges single answers):
 - the first non-solid answer at a level gets one second chance: a probe (partial) or a scaffold hint (weak)
 - a second non-solid answer, the topic's time budget, or reaching level 5 closes the topic
 - topics go in plan order (priority); when time is nearly up or topics run out: wrap up.
+- demo rules (config.DEMO_RULES, on for now, see _demo_rule): "I don't know" always gets one retry one level lower and a
+  second one in a row moves on; any real first answer on the weights / initialisation topic climbs to level 3.
 
 Latency: most answers are solid, and what a solid answer leads to is known before the judgement. So while the
 judge works, the talker already phrases that follow-up; it is used if the verdict agrees, discarded otherwise."""
@@ -28,6 +30,15 @@ CLOSING = {"it": "Grazie, la nostra conversazione finisce qui. Il vostro docente
            "en": "Thank you, that's the end of our conversation. Your professor will receive a summary of what we "
                  "discussed. Good luck with your project!"}
 _pool = ThreadPoolExecutor(max_workers=4, thread_name_prefix="talker")
+
+
+_DONT_KNOW = ("don't know", "dont know", "do not know", "idk", "no idea", "not sure", "can't remember", "don't remember")
+
+
+def _says_dont_know(answer: Optional[str]) -> bool:
+    """An empty answer, or a short one that only says "I don't know" (the judge may still call it weak)."""
+    text = (answer or "").strip().lower().replace("’", "'")
+    return not text or (len(text.split()) <= 8 and any(p in text for p in _DONT_KNOW))
 
 
 def closing() -> str:
@@ -117,6 +128,10 @@ class Interview:
 
     def _after_answer(self, ts: TopicState, turn: Turn) -> Move:
         ev, topic = turn.evaluation, self._topic(ts.id)
+        if config.DEMO_RULES:
+            forced = self._demo_rule(ts, turn, topic)
+            if forced is not None:
+                return forced
         over_budget = ts.spent_s >= topic.time_budget_s
         if ev.verdict == "solid":
             ts.level, ts.misses = max(ts.level, ts.current), 0
@@ -135,6 +150,32 @@ class Interview:
                         intent="The team struggled. Give a small hint pointing to the relevant part of their "
                                "own deliverable, then ask a simpler version of the question.")
         return self._close(ts)
+
+    def _demo_rule(self, ts: TopicState, turn: Turn, topic: Topic) -> Optional[Move]:
+        """Hard-coded demo rules (config.DEMO_RULES, on for now). None = the normal rules decide.
+        1. "I don't know": always one retry, a hint and an easier question one Bloom level lower; a second
+           "I don't know" in a row closes the topic and the interview moves on.
+        2. The first question of the weights / initialisation topic: any answer that says something (even one the
+           judge calls weak) climbs to level 3; "I don't know" or an off-topic answer does not."""
+        ev = turn.evaluation
+        if ev.verdict == "dont_know":
+            before = self.state.turns[-2] if len(self.state.turns) > 1 else None
+            again = (turn.move.kind == "scaffold" and before is not None and before.move.topic_id == ts.id
+                     and before.evaluation is not None and before.evaluation.verdict == "dont_know")
+            if again:
+                ts.misses += 1
+                return self._close(ts)
+            ts.misses, ts.current = 1, max(1, ts.current - 1)  # the retry is one Bloom level lower
+            return Move(kind="scaffold", topic_id=ts.id, level=ts.current,
+                        intent="The team said they don't know. Give a small hint pointing to the relevant part of "
+                               "their own deliverable, then ask an easier question one level lower.")
+        about_weights = any(w in f"{topic.id} {topic.title}".lower() for w in ("weight", "init"))
+        if (about_weights and ts.current == MIN_LEVEL and turn.move.kind in ("ask", "next_topic")
+                and ev.verdict != "off_topic" and not _says_dont_know(turn.answer)):
+            ts.level, ts.misses, ts.current = MIN_LEVEL, 0, MIN_LEVEL + 1
+            return Move(kind="ask", topic_id=ts.id, level=ts.current,
+                        intent="Go one step deeper on the same topic with the planned question for this level.")
+        return None
 
     def _if_solid(self, turn: Turn) -> Move:
         """The move a solid answer leads to, worked out on a copy: the real state is not touched."""

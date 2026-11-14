@@ -34,7 +34,7 @@ The v0.2 proof of concept (group voice call over LiveKit, local Whisper/Kokoro, 
 | D21 | **3 topics** per interview (`PYTHAGORAS_TOPICS`) | Ten minutes are enough to climb Bloom's levels on three topics, not on four or five |
 | D22 | **OpenRouter** as a third provider (`OPENROUTER_API_KEY`, plain HTTP, no new dependency): Claude Sonnet 5.5 (plan, report) + Haiku 5.5 (judge, talker) by default, PDFs sent as files; the account's OpenRouter guardrails block Google and OpenAI models | Paid per token with no daily quota: the Gemini free tier allows ~20 Flash requests a day |
 
-| D23 | **Teams**: the form asks for a team name and contact email (stored in the existing `student_name` / `email` fields); prompts and pages address the team, and whoever worked on a part answers it. A finished **Team_1 Pirelli report** is seeded at startup when `cases/pirelli/team1.json` is present | The course assesses team projects; the professor pages need a complete example for the demo |
+| D23 | **Teams**: the form asks for a team name and contact email (stored in the existing `student_name` / `email` fields); prompts and pages address the team, and whoever worked on a part answers it. A finished **Team_1 report** is seeded at startup from the demo case's `team1.json` (synthetic `cases/ffnn/team1.json` in the repository, Pirelli when that case is present) | The course assesses team projects; the professor pages need a complete example for the demo |
 
 ## Interview rules (engine.py)
 

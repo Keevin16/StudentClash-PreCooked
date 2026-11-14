@@ -18,7 +18,7 @@ python -m pythagoras serve         # first start downloads the voice models (~2.
 ```
 
 - Professor: <http://localhost:8000/prof> (open by default; set `PYTHAGORAS_PROFESSOR_PASSWORD` to require a login): create an assignment.
-- Quickest demo: on the student page click **Use the Pirelli case**: the interview opens with nothing to fill in (the first click prepares the plan in ~2 min, later clicks reuse it). The professor pages also show a finished **Team_1** Pirelli report. Both need `cases/pirelli/` (the PDFs and `team1.json`), which is not in the repo; without it the synthetic neural-network case is used.
+- Quickest demo: on the student page click **Use the Pirelli case**: the interview opens with nothing to fill in (the first click prepares the plan in ~2 min, later clicks reuse it). The professor pages also show a finished **Team_1** report (topics, levels, quotes, questions for the oral exam). Without `cases/pirelli/` (not in the repo) both use the synthetic neural-network case (`cases/ffnn`, report in `cases/ffnn/team1.json`).
 - Team: <http://localhost:8000/>: team name, contact email and files, then open the invite link (shown on screen when SMTP is not configured).
 - `python scripts/smoke.py` runs a whole spoken interview with a synthetic student and prints the latency of each stage.
 

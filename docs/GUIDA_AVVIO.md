@@ -41,7 +41,7 @@ Serve la cartella `cases/pirelli/` (i due PDF e `team1.json`), che non è nel re
 - **Studenti** → <http://localhost:8000/> → **Use the Pirelli case**: si apre l'intervista senza compilare nulla. Il primo clic prepara il piano (~2 minuti, la pagina va avanti da sola), i successivi partono subito.
 - **Professore** → <http://localhost:8000/prof>: nella consegna Pirelli c'è già il report completo di **Team_1** (3 temi a livelli diversi, citazioni, domande per l'orale).
 
-Senza `cases/pirelli/` il pulsante usa il caso sintetico della rete neurale.
+Senza `cases/pirelli/` il pulsante usa il caso sintetico della rete neurale, e nella sua consegna c'è il report completo di **Team_1** (`cases/ffnn/team1.json`).
 
 ## 6. Prova completa con il caso di test (`cases/ffnn/`)
 1. **Professore** → <http://localhost:8000/prof>, senza password (per richiederne una: `PYTHAGORAS_PROFESSOR_PASSWORD` in `.env`).

@@ -223,7 +223,8 @@ def _demo_case() -> dict:
                 "objectives": "LO1 Compute and interpret profitability and value-creation ratios (ROE, ROIC, WACC)\n"
                               "LO2 Assess liquidity and cash flows\nLO3 Choose comparable peers and benchmark critically\n"
                               "LO4 Distinguish recurring performance from one-off effects",
-                "deliverable": [CASES / "pirelli" / "PirelliReportGroup21.pdf"], "materials": [CASES / "pirelli" / "afc.pdf"]}
+                "deliverable": [CASES / "pirelli" / "PirelliReportGroup21.pdf"], "materials": [CASES / "pirelli" / "afc.pdf"],
+                "dir": CASES / "pirelli"}
     ffnn = CASES / "ffnn"
     return {"label": "neural network", "title": "Project 1 - A feed-forward network from scratch",
             "course": "Introduction to Deep Learning", "headline": "Inside a neural network project.",
@@ -233,7 +234,7 @@ def _demo_case() -> dict:
                           "backpropagation\nLO3 Choose and justify initialisation, learning rate and architecture\n"
                           "LO4 Evaluate a model correctly and recognise overfitting",
             "deliverable": [ffnn / "deliverable" / "report.pdf", ffnn / "deliverable" / "mlp.py"],
-            "materials": [ffnn / "course" / "ffnn-notes.md"]}
+            "materials": [ffnn / "course" / "ffnn-notes.md"], "dir": ffnn}
 
 
 DEMO_TEAM = "Team_1"
@@ -255,11 +256,11 @@ def _demo_assignment(case: dict) -> dict:
 
 
 def seed_demo_report() -> bool:
-    """A finished Team_1 interview with its report, so the professor pages have a complete example.
-    Only where the Pirelli case is on disk (cases/pirelli/team1.json, not in the repository)."""
-    data = CASES / "pirelli" / "team1.json"
+    """A finished Team_1 interview with its report, so the professor pages have a complete example:
+    team1.json of the demo case (cases/ffnn/team1.json is synthetic; cases/pirelli is not in the repository)."""
     case = _demo_case()
-    if not data.exists() or case["label"] != "Pirelli":
+    data = case["dir"] / "team1.json"
+    if not data.exists():
         return False
     a = _demo_assignment(case)
     if any(s["student_name"] == DEMO_TEAM for s in db.list_submissions(a["id"])):

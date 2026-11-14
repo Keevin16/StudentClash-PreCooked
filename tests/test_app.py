@@ -152,3 +152,14 @@ def test_professor_pages_are_open_without_a_password(monkeypatch):
     monkeypatch.setattr(config, "PROFESSOR_PASSWORD", "")
     c = TestClient(app)
     assert c.get("/api/prof/assignments").status_code == 200 and c.get("/api/prof/auth").json() == {"password": False}
+
+
+def test_demo_report_is_seeded_once(client):
+    from pythagoras.app import seed_demo_report
+    seed_demo_report()  # synthetic cases/ffnn/team1.json (startup may have added it already)
+    assert not seed_demo_report()  # never twice
+    login(client)
+    a = next(x for x in client.get("/api/prof/assignments").json() if x["title"].startswith("Project 1 - A feed"))
+    sub = next(s for s in client.get(f"/api/prof/assignments/{a['id']}").json()["submissions"] if s["student_name"] == "Team_1")
+    rep = client.get(f"/api/prof/submissions/{sub['id']}").json()
+    assert rep["submission"]["status"] == "completed" and len(rep["report"]["topics"]) == 3
