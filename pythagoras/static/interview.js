@@ -419,7 +419,6 @@
       $("#error-msg").textContent = e.status === 404 ? "This interview link isn't valid. Check the link in your email." : e.message;
       show("error"); return;
     }
-    $("#who").textContent = info.student_name || "";
     if (info.status === "preparing") { show("preparing"); setTimeout(load, 3000); return; }
     if (info.status === "error") { $("#error-msg").textContent = info.error || "We couldn't prepare your interview. Please contact your professor."; show("error"); return; }
     if (info.status === "completed") { show("completed"); return; }
