@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,99 +8,229 @@
   <title>Pythagoras · Interview</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="/static/room.css">
 </head>
+
 <body>
-<div class="app-shell">
-  <aside class="sidebar"><a href="/" class="brand"><span class="brand-icon">g<span>✳</span></span>pythagoras<span class="brand-dot">.</span></a>
-    <div class="workspace"><span class="workspace-icon">G</span><div>AI oral assessment<small>Team workspace</small></div></div>
-    <div class="nav-label">WORKSPACE</div>
-    <nav><a class="nav-item " href="/"><span>▦</span> My project <i>01</i></a>
-      <span class="nav-item active"><span>◉</span> Interview <i>02</i></span></nav>
-    <div class="sidebar-bottom"><div class="sidebar-note"><span>✧</span><strong>Reasoning matters.</strong><p>A conversation about your work,<br>one question at a time.</p></div>
-      <div class="profile"><div class="avatar small">YOU</div><div><span id="who">Your team</span><small>Team space</small></div></div></div></aside>
-  <main>
-    <header class="topbar"><div id="breadcrumb">Workspace <span>/</span> Interview</div><div class="top-right"><span class="status-dot"></span><span>Pythagoras never grades</span></div></header>
-
-    <!-- loading -->
-    <section id="s-loading" class="view"><div class="panel center-state"><span class="spinner lg"></span><p style="margin-top:14px">Loading your interview…</p></div></section>
-
-    <!-- preparing -->
-    <section id="s-preparing" class="view hidden"><div class="panel center-state"><div class="mini-orb"></div><h2>Pythagoras is reading your project…</h2><p>This usually takes a minute or two. Keep this page open: it moves on by itself as soon as your interview is ready.</p></div></section>
-
-    <!-- error -->
-    <section id="s-error" class="view hidden"><div class="panel center-state"><h2>Something went wrong</h2><p id="error-msg"></p><button class="primary" id="error-retry">Try again <span>↻</span></button></div></section>
-
-    <!-- already completed -->
-    <section id="s-completed" class="view hidden"><div class="panel center-state"><div class="success-mark" style="margin:0 auto">✓</div><h2>Interview already completed</h2><p>Thanks — your professor has your report. There's nothing else to do here.</p></div></section>
-
-    <!-- intro -->
-    <section id="s-intro" class="view intro-view hidden">
-      <div class="page-intro"><div class="eyebrow"><span></span> <b id="intro-assignment" style="font-weight:650;text-transform:uppercase"></b></div><h1 id="intro-hello">Ready when you are.</h1>
-        <p>Pythagoras asks a few questions about your project, one at a time, and listens.<br>Just talk: it notices when you've finished, and it waits while you think.</p></div>
-      <div class="panel intro-panel" style="margin-top:28px">
-        <div class="panel-heading"><div><h2>Before we start</h2><p>A calm conversation, not a quiz.</p></div><span class="tiny-tag">02 / MEET PYTHAGORAS</span></div>
-        <ul class="rules">
-          <li><span class="ic">⏱</span><div><strong>About <span id="intro-minutes">10</span> minutes.</strong> You'll see a timer at the top.</div></li>
-          <li><span class="ic">◌</span><div><strong>Find a quiet room</strong> and use headphones if you can.</div></li>
-          <li><span class="ic">✎</span><div><strong>Whoever worked on a part answers it.</strong> In your own words, as you would with your professor.</div></li>
-          <li><span class="ic">∼</span><div><strong>“I don't know” is fine.</strong> Pythagoras will simply move on.</div></li>
-          <li id="cam-rule" class="hidden"><span class="ic">◉</span><div><strong>Keep your camera on</strong> for the whole conversation.</div></li>
-          <li><span class="ic">✧</span><div><strong>Pythagoras never grades you.</strong> Your professor reads the conversation and decides.</div></li>
-        </ul>
-        <div class="mic-check">
-          <div class="row"><div><strong>Microphone check</strong><small id="mic-msg">Say a few words to make sure we hear you.</small></div><button class="control" id="mic-test"><span>♩</span> Test my microphone</button></div>
-          <div class="meter"><i id="mic-meter"></i></div>
-          <div id="mic-heard" style="margin-top:8px;min-height:1.4em;color:#4a6a3d;font-size:10px"></div>
-        </div>
-        <div id="no-speech-note" class="notice warn hidden" style="margin-top:16px"><strong>Voice answers aren't supported in this browser.</strong>Pythagoras will still speak, and you'll type your answers. For voice, use Chrome, Edge or Safari.</div>
-        <div style="margin-top:22px;display:flex;justify-content:flex-end"><button class="primary" id="start-btn">Start the interview <span>↗</span></button></div>
+  <div class="app-shell">
+    <aside class="sidebar"><a href="/" class="brand"><span class="brand-icon">P</span>pythagoras</a>
+      <div class="workspace"><span class="workspace-icon">G</span>
+        <div>AI oral assessment<small>Team workspace</small></div>
       </div>
-    </section>
-
-    <!-- live: the room -->
-    <section id="s-live" class="view hidden">
-      <div class="room-heading"><div><div class="eyebrow">YOUR CONVERSATION</div><h1 id="room-title">Your project</h1><p>One project, your team's reasoning. Take the time you need.</p></div>
-        <div class="room-time"><span class="status-dot"></span><span id="timer">00:00 / 10:00</span><button id="end-top">End ↗</button></div></div>
-      <div class="room-grid">
-        <div class="conversation-panel panel">
-          <div class="room-panel-head"><div><span class="status-dot" id="mic-dot"></span> <strong id="mic-label">Pythagoras is ready</strong></div><span class="tiny-tag" id="mode-tag">LIVE</span></div>
-          <div class="agent-stage"><div class="orb-wrap" id="orb-wrap"><div class="orb-glow"></div><div class="orb"><div class="orb-inner"></div></div></div>
-            <div class="agent-name">Pythagoras <span>AI</span><i id="speaking" class="hidden"></i></div>
-            <div class="agent-caption">One question at a time. Take your time to think.</div>
-            <div class="waveform" id="waveform"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-          <div class="question-card"><div class="question-meta"><span id="progress-label">GETTING STARTED</span><span id="level-badge"></span></div>
-            <p id="q-text"></p>
-            <div class="question-source"><span>↳</span><span id="topic-title">Introduction</span><button id="repeat-btn" title="Hear the question again">↻ Repeat</button></div></div>
-          <div class="voice-controls" style="margin-top:17px"><button class="control" id="mode-btn"><span>⌨</span> Type instead</button><button class="control done" id="done-btn" type="button">✓ I'm done</button><span id="send-hint">Listen to the question, then answer.</span></div>
+      <div class="nav-label">WORKSPACE</div>
+      <nav><a class="nav-item " href="/"><span>▦</span> My project <i>01</i></a>
+        <span class="nav-item active"><span>◉</span> Interview <i>02</i></span>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-note"><span>✧</span><strong>Reasoning matters.</strong>
+          <p>A conversation about your work,<br>one question at a time.</p>
         </div>
-        <aside class="insight-panel">
-          <article class="panel camera-panel hidden" id="cam-tile" aria-label="Your camera"><div class="camera-heading"><span class="tiny-tag">YOUR TEAM</span><span class="camera-demo-label">CAMERA ON</span></div>
-            <div class="camera-frame"><video id="cam-video" autoplay muted playsinline aria-label="Live preview of your camera"></video><div id="cam-placeholder" class="camera-placeholder"><span aria-hidden="true">◉</span><strong>You, at the centre.</strong><small>Waiting for your camera…</small></div><div class="camera-rec"><span></span> REC <time id="cam-timer">00:00</time></div><span class="camera-self-label">Your team · live</span></div></article>
-          <article class="panel journey"><div class="panel-heading"><h2>The thread</h2><span class="tiny-tag" id="topic-progress">00 / 00</span></div><div id="topic-list"></div>
-            <div class="bloom-box"><div><span class="tiny-tag">DEPTH OF THE QUESTION</span><strong id="bloom-label">—</strong></div><div class="bloom-bars" id="bloom-bars"><i></i><i></i><i></i><i></i></div><p>A solid answer opens a deeper question. One follow-up if needed, then a new topic.</p></div></article>
-          <div class="local-note">The questions come from your own project.<br>Pythagoras never assigns a grade.</div>
-        </aside>
-      </div>
-      <div class="panel transcript-panel"><div class="transcript-header"><h2>The conversation <span id="turn-count">0 turns</span></h2><button id="toggle-transcript">Hide transcript ⌃</button></div>
-        <div id="transcript" class="transcript" aria-live="polite"></div>
-        <div id="answer-input">
-          <div id="answer-form"><textarea id="answer" rows="2" placeholder="Your words appear here after you speak."></textarea><button class="primary" id="send-btn" type="button">Send <span>↑</span></button></div>
-          <div class="composer-foot"><span id="voice-note" class="hidden">Just speak — Pythagoras notices when you've finished. You can also type here.</span><span>One project, one conversation.</span></div>
+        <div class="profile">
+          <div class="avatar small">YOU</div>
+          <div><span id="who">Your team</span><small>Team space</small></div>
         </div>
-        <div id="answer-thinking" class="thinking hidden"><span class="spinner"></span> Pythagoras is following your reasoning…</div>
-        <div id="answer-error" class="answer-error hidden"><div class="error" style="margin-top:0"><strong>Your answer didn't reach Pythagoras.</strong><span id="answer-error-msg"></span></div>
-          <div class="actions"><button class="primary" id="retry-btn">Try again</button><button class="secondary" id="edit-btn">Edit answer</button><button class="secondary" id="end-btn">End interview &amp; save</button></div></div>
       </div>
-    </section>
+    </aside>
+    <main>
 
-    <!-- done -->
-    <section id="s-done" class="view hidden"><div class="page-intro"><div class="eyebrow"><span></span> THE CONVERSATION, DONE</div><h1>Ideas stay.<br><span>This is where it goes on.</span></h1><p>Your interview is complete. Your professor will receive a summary of the conversation<br>to start your team's oral exam from. You can close this page.</p></div></section>
-  </main>
-</div>
-<script src="/static/app.js"></script>
-<script src="/static/voice-local.js"></script>
-<script src="/static/interview.js"></script>
+      <!-- loading -->
+      <section id="s-loading" class="view">
+        <div class="panel center-state"><span class="spinner lg"></span>
+          <p style="margin-top:14px">Loading your interview…</p>
+        </div>
+      </section>
+
+      <!-- preparing -->
+      <section id="s-preparing" class="view hidden">
+        <div class="panel center-state">
+          <div class="mini-orb"></div>
+          <h2>Pythagoras is reading your project…</h2>
+          <p>This usually takes a minute or two. Keep this page open: it moves on by itself as soon as your interview is
+            ready.</p>
+        </div>
+      </section>
+
+      <!-- error -->
+      <section id="s-error" class="view hidden">
+        <div class="panel center-state">
+          <h2>Something went wrong</h2>
+          <p id="error-msg"></p><button class="primary" id="error-retry">Try again <span>↻</span></button>
+        </div>
+      </section>
+
+      <!-- already completed -->
+      <section id="s-completed" class="view hidden">
+        <div class="panel center-state">
+          <div class="success-mark" style="margin:0 auto">✓</div>
+          <h2>Interview already completed</h2>
+          <p>Thanks — your professor has your report. There's nothing else to do here.</p>
+        </div>
+      </section>
+
+      <!-- intro -->
+      <section id="s-intro" class="view intro-view hidden">
+        <div class="page-intro">
+          <div class="eyebrow"><span></span> <b id="intro-assignment"
+              style="font-weight:650;text-transform:uppercase"></b></div>
+          <h1 id="intro-hello">Ready when you are.</h1>
+          <p>Pythagoras asks a few questions about your project, one at a time, and listens.<br>Just talk: it notices
+            when you've finished, and it waits while you think.</p>
+        </div>
+        <div class="panel intro-panel" style="margin-top:28px">
+          <div class="panel-heading">
+            <div>
+              <h2>Before we start</h2>
+              <p>A calm conversation, not a quiz.</p>
+            </div><span class="tiny-tag">02 / MEET PYTHAGORAS</span>
+          </div>
+          <ul class="rules">
+            <li><span class="ic">⏱</span>
+              <div><strong>About <span id="intro-minutes">10</span> minutes.</strong> You'll see a timer at the top.
+              </div>
+            </li>
+            <li><span class="ic">◌</span>
+              <div><strong>Find a quiet room</strong> and use headphones if you can.</div>
+            </li>
+            <li><span class="ic">✎</span>
+              <div><strong>Whoever worked on a part answers it.</strong> In your own words, as you would with your
+                professor.</div>
+            </li>
+            <li><span class="ic">∼</span>
+              <div><strong>“I don't know” is fine.</strong> Pythagoras will simply move on.</div>
+            </li>
+            <li id="cam-rule" class="hidden"><span class="ic">◉</span>
+              <div><strong>Keep your camera on</strong> for the whole conversation.</div>
+            </li>
+            <li><span class="ic">✧</span>
+              <div><strong>Pythagoras never grades you.</strong> Your professor reads the conversation and decides.
+              </div>
+            </li>
+          </ul>
+          <div class="mic-check">
+            <div class="row">
+              <div><strong>Microphone check</strong><small id="mic-msg">Say a few words to make sure we hear
+                  you.</small></div><button class="control" id="mic-test"><span>♩</span> Test my microphone</button>
+            </div>
+            <div class="meter"><i id="mic-meter"></i></div>
+            <div id="mic-heard" style="margin-top:8px;min-height:1.4em;color:#4a6a3d;font-size:10px"></div>
+          </div>
+          <div id="no-speech-note" class="notice warn hidden" style="margin-top:16px"><strong>Voice answers aren't
+              supported in this browser.</strong>Pythagoras will still speak, and you'll type your answers. For voice,
+            use Chrome, Edge or Safari.</div>
+          <div style="margin-top:22px;display:flex;justify-content:flex-end"><button class="primary"
+              id="start-btn">Start the interview <span>↗</span></button></div>
+        </div>
+      </section>
+
+      <!-- live: the room -->
+      <section id="s-live" class="view hidden">
+        <div class="room-heading">
+          <div>
+            <div class="eyebrow">YOUR CONVERSATION</div>
+            <h1 id="room-title">Your project</h1>
+            <p>One project, your team's reasoning. Take the time you need.</p>
+          </div>
+          <div class="room-time"><span class="status-dot"></span><span id="timer">00:00 / 10:00</span><button
+              id="end-top">End ↗</button></div>
+        </div>
+        <div class="room-grid">
+          <div class="conversation-panel panel">
+            <div class="room-panel-head">
+              <div><span class="status-dot" id="mic-dot"></span> <strong id="mic-label">Pythagoras is ready</strong>
+              </div><span class="tiny-tag" id="mode-tag">LIVE</span>
+            </div>
+            <div class="agent-stage">
+              <div class="orb-wrap" id="orb-wrap">
+                <div class="orb-glow"></div>
+                <div class="orb">
+                  <div class="orb-inner"></div>
+                </div>
+              </div>
+              <div class="agent-name">Pythagoras <span>AI</span><i id="speaking" class="hidden"></i></div>
+              <div class="agent-caption">One question at a time. Take your time to think.</div>
+              <div class="waveform" id="waveform">
+                <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+            </div>
+            <div class="question-card">
+              <div class="question-meta"><span id="progress-label">GETTING STARTED</span><span id="level-badge"></span>
+              </div>
+              <p id="q-text"></p>
+              <div class="question-source"><span>↳</span><span id="topic-title">Introduction</span><button
+                  id="repeat-btn" title="Hear the question again">↻ Repeat</button></div>
+            </div>
+            <div class="voice-controls" style="margin-top:17px"><button class="control" id="mode-btn"><span>⌨</span>
+                Type instead</button><button class="control done" id="done-btn" type="button">✓ I'm done</button><span
+                id="send-hint">Listen to the question, then answer.</span></div>
+          </div>
+          <aside class="insight-panel">
+            <article class="panel camera-panel hidden" id="cam-tile" aria-label="Your camera">
+              <div class="camera-heading"><span class="tiny-tag">YOUR TEAM</span><span class="camera-demo-label">CAMERA
+                  ON</span></div>
+              <div class="camera-frame"><video id="cam-video" autoplay muted playsinline
+                  aria-label="Live preview of your camera"></video>
+                <div id="cam-placeholder" class="camera-placeholder"><span aria-hidden="true">◉</span><strong>You, at
+                    the centre.</strong><small>Waiting for your camera…</small></div>
+                <div class="camera-rec"><span></span> REC <time id="cam-timer">00:00</time></div><span
+                  class="camera-self-label">Your team · live</span>
+              </div>
+            </article>
+            <article class="panel journey">
+              <div class="panel-heading">
+                <h2>The thread</h2><span class="tiny-tag" id="topic-progress">00 / 00</span>
+              </div>
+              <div id="topic-list"></div>
+              <div class="bloom-box">
+                <div><span class="tiny-tag">DEPTH OF THE QUESTION</span><strong id="bloom-label">—</strong></div>
+                <div class="bloom-bars" id="bloom-bars"><i></i><i></i><i></i><i></i></div>
+                <p>A solid answer opens a deeper question. One follow-up if needed, then a new topic.</p>
+              </div>
+            </article>
+            <div class="local-note">The questions come from your own project.<br>Pythagoras never assigns a grade.</div>
+          </aside>
+        </div>
+        <div class="panel transcript-panel">
+          <div class="transcript-header">
+            <h2>The conversation <span id="turn-count">0 turns</span></h2><button id="toggle-transcript">Hide transcript
+              ⌃</button>
+          </div>
+          <div id="transcript" class="transcript" aria-live="polite"></div>
+          <div id="answer-input">
+            <div id="answer-form"><textarea id="answer" rows="2"
+                placeholder="Your words appear here after you speak."></textarea><button class="primary" id="send-btn"
+                type="button">Send <span>↑</span></button></div>
+            <div class="composer-foot"><span id="voice-note" class="hidden">Just speak — Pythagoras notices when you've
+                finished. You can also type here.</span><span>One project, one conversation.</span></div>
+          </div>
+          <div id="answer-thinking" class="thinking hidden"><span class="spinner"></span> Pythagoras is following your
+            reasoning…</div>
+          <div id="answer-error" class="answer-error hidden">
+            <div class="error" style="margin-top:0"><strong>Your answer didn't reach Pythagoras.</strong><span
+                id="answer-error-msg"></span></div>
+            <div class="actions"><button class="primary" id="retry-btn">Try again</button><button class="secondary"
+                id="edit-btn">Edit answer</button><button class="secondary" id="end-btn">End interview &amp;
+                save</button></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- done -->
+      <section id="s-done" class="view hidden">
+        <div class="page-intro">
+          <div class="eyebrow"><span></span> THE CONVERSATION, DONE</div>
+          <h1>Ideas stay.<br><span>This is where it goes on.</span></h1>
+          <p>Your interview is complete. Your professor will receive a summary of the conversation<br>to start your
+            team's oral exam from. You can close this page.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/static/app.js"></script>
+  <script src="/static/voice-local.js"></script>
+  <script src="/static/interview.js"></script>
 </body>
+
 </html>
