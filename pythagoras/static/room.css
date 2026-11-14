@@ -76,3 +76,239 @@ a.nav-item{text-decoration:none}.nav-item.off{opacity:.55;cursor:default}
 .intro-view .mic-check{font-size:15px;padding:20px 22px}.intro-view .mic-check small{font-size:13px}.intro-view .mic-check .control{font-size:13px;padding:10px 14px}
 .intro-view #mic-heard{font-size:13px!important}
 .intro-view #start-btn{font-size:15px;padding:16px 24px}
+
+/* Refined look: type hierarchy and contrast for reading from a distance */
+@media (min-width:701px){
+/* ---- shared foundation: colour tokens, type floor (14px), contrast (AA) ---- */
+:root{
+  --bg:#f7f8f5; --side:#f1f3ed; --surface:#fff; --soft:#f3f6ee; --soft2:#e4ecd9;
+  --line:#dde3d6; --line2:#b9c6ae;
+  --ink:#1b2c25; --t2:#445246; --t3:#5a675b; --accent:#2a5a40; --h1b:#6c8763;
+  --btn:#275b43; --btn-hover:#34704f; --btn-ink:#fff;
+  --bar:#6f9459; --bar-off:#d5dfca; --danger:#a13f2b; --danger-bg:#fff2ed; --danger-line:#edd8cd;
+  --tag:14px; --sm:14px; --body:16px; --lg:18px;
+}
+body{background:var(--bg);color:var(--ink);font-size:var(--body);line-height:1.5}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline-color:var(--bar)}
+
+/* sidebar */
+.sidebar{background:var(--side);border-color:var(--line)}
+.workspace{font-size:15px;line-height:1.25;border-color:var(--line)}
+.workspace small,.profile small{font-size:var(--sm);color:var(--t3);margin-top:2px}
+.workspace-icon{background:var(--surface);border-color:var(--line2);font-size:16px}
+.chevron,.profile>span{color:var(--t3)}
+.nav-label{font-size:var(--tag);letter-spacing:.1em;color:var(--t3);font-weight:600}
+.nav-item{font-size:16px;color:var(--t2);padding:12px}
+.nav-item.active{background:var(--soft2);color:var(--accent);font-weight:600}
+.nav-item i{font-size:var(--sm)}
+.nav-item.off{opacity:.7}
+.sidebar-note>span{color:var(--accent)}
+.sidebar-note strong{font-size:16px}
+.sidebar-note p{font-size:var(--sm);line-height:1.55;color:var(--t3);margin:4px 0 0}
+.profile{font-size:15px;line-height:1.25;border-color:var(--line)}
+.profile a{color:var(--accent)}
+.avatar{background:var(--soft2);color:var(--accent)}
+.avatar.small{width:42px;height:42px;font-size:14px;flex-shrink:0}
+
+/* top bar + page intro */
+.topbar{font-size:15px;color:var(--t3);border-color:var(--line)}
+.topbar #breadcrumb span{color:var(--t3)}
+.top-right{font-size:15px;color:var(--t2)}
+.status-dot{width:9px;height:9px;background:var(--bar)}
+.divider{background:var(--line)}
+.eyebrow{font-size:var(--tag);letter-spacing:.14em;color:var(--accent);margin-bottom:10px}
+.eyebrow>span{width:7px;height:7px;background:var(--bar)}
+h1>span{color:var(--h1b)}
+.page-intro h1{font-size:clamp(50px,4.4vw,84px);letter-spacing:-.045em;line-height:1.06;margin-bottom:14px}
+.page-intro>p{font-size:var(--lg);line-height:1.55;color:var(--t2)}
+h2{font-size:22px}
+
+/* steps */
+.steps{max-width:none;gap:14px;margin:22px 0 20px}
+.step{font-size:17px;color:var(--t3);gap:10px}
+.step b{width:32px;height:32px;font-size:15px;font-weight:600;border-color:var(--line2);flex-shrink:0}
+.step.current{color:var(--accent);font-weight:600}
+.step.current b{background:var(--btn);border-color:var(--btn);color:var(--btn-ink)}
+.step-line{flex:1 1 20px;max-width:64px;min-width:14px;background:var(--line2)}
+
+/* panels + form */
+.panel{background:var(--surface);border-color:var(--line)}
+.panel-heading p{font-size:15px;color:var(--t3)}
+.tiny-tag,.room-panel-head .tiny-tag,.bloom-box .tiny-tag,.preview-top .tiny-tag,.intro-view .tiny-tag,.panel-heading .tiny-tag{font-size:var(--tag);letter-spacing:.08em;color:var(--t3);white-space:nowrap}
+.drop-zone{min-height:150px;border-color:var(--line2);background:var(--soft);padding:18px}
+.drop-zone:hover,.drop-zone.dragover,.drop-zone.over{background:var(--soft2);border-color:var(--bar)}
+.upload-symbol{border-color:var(--line2);color:var(--accent);background:var(--surface)}
+.drop-zone strong{font-size:17px;font-weight:600}
+.drop-zone>span:not(.upload-symbol){font-size:15px;color:var(--t2)}
+.drop-zone em{color:var(--accent)}
+.drop-zone small{font-size:var(--sm);color:var(--t3);margin-top:4px;text-align:center}
+.course-upload{border-color:var(--line)}
+.course-upload strong{font-size:15px}.course-upload small{font-size:var(--sm);color:var(--t3)}
+.file-icon{color:var(--accent)}
+.plus{color:var(--t3)}
+.field>label{font-size:var(--tag);letter-spacing:.08em;color:var(--t3);margin-bottom:7px}
+.field select,.field>input{font-size:16px;color:var(--ink);background:var(--surface);border-color:var(--line2);padding:12px 13px}
+.field>input::placeholder{color:var(--t3);opacity:.8}
+.field>small{font-size:var(--sm);color:var(--t3)}
+.consent{font-size:var(--sm);line-height:1.5;color:var(--t3);gap:10px;margin:14px 0}
+.consent input{width:16px;height:16px;margin-top:2px;accent-color:var(--btn)}
+.primary,.btn.primary{background:var(--btn);color:var(--btn-ink);font-size:17px;font-weight:600;padding:15px 20px;border-radius:8px}
+.primary:hover{background:var(--btn-hover)}
+.primary span{font-size:20px;line-height:1}
+.chip{font-size:var(--sm);background:var(--soft);border-color:var(--line);color:var(--accent)}
+.chip .size{color:var(--t3)}.chip button{font-size:18px;color:var(--t2)}
+.notice{font-size:15px;line-height:1.55;background:var(--soft);border-color:var(--line);color:var(--t2)}
+.notice strong{font-size:16px;color:var(--accent)}
+.btn,.secondary{font-size:15px;padding:10px 14px;background:var(--surface);border-color:var(--line2);border-radius:7px}
+.copy-row input{font-size:15px;color:var(--ink);background:var(--surface);border-color:var(--line2)}
+.skeleton{background:var(--soft2)}
+.success-mark{background:var(--soft2);color:var(--accent)}
+.lede{font-size:17px;line-height:1.6;color:var(--t2)}
+.upload-progress{font-size:15px;color:var(--t2)}
+.error{font-size:15px;line-height:1.5;background:var(--danger-bg);border-color:var(--danger-line);color:var(--danger)}
+.toast{font-size:16px;background:var(--btn);color:var(--btn-ink)}
+.kbd{font-size:var(--sm);border-color:var(--line2);background:var(--surface);color:var(--ink);padding:2px 7px;border-radius:5px}
+.center-state h2{font-size:28px}
+.center-state p{font-size:17px;line-height:1.6;color:var(--t2)}
+.expect li{font-size:15px;color:var(--t2);border-color:var(--line)}.expect b{color:var(--accent)}
+
+/* upload page: right column */
+.preview-card{min-height:0;padding:24px}
+.preview-top .tiny-tag{color:var(--accent)}
+.sparkle{color:var(--accent)}
+.preview-card blockquote{font-size:26px;line-height:1.35;color:var(--accent)}
+.preview-bottom{font-size:var(--sm);color:var(--t2);gap:9px}
+.demo-card{background:var(--surface);border-color:var(--line);padding:24px}
+.demo-heading{margin-bottom:12px}
+.demo-card h3{font-family:Manrope,var(--font);font-size:24px;font-weight:650;margin-bottom:6px}
+.demo-card p{font-size:15px;line-height:1.5;color:var(--t2);max-width:none;margin-bottom:12px}
+.demo-meta{font-size:var(--sm);color:var(--t3);margin-bottom:16px;flex-wrap:wrap;gap:4px 15px}
+.demo-card button{background:var(--btn);color:var(--btn-ink);border:0;border-radius:8px;padding:15px 18px;font-size:17px;font-weight:600;align-items:center}
+.demo-card button:hover{background:var(--btn-hover)}
+.page-footer{font-size:var(--sm);color:var(--t3)}
+.page-footer>span:first-child{color:var(--t2)}
+
+/* interview: intro */
+.intro-view .page-intro .eyebrow{font-size:var(--tag)}
+.intro-view .page-intro h1{font-size:clamp(46px,3.9vw,68px)}
+.intro-view .page-intro>p{font-size:var(--lg);line-height:1.55;color:var(--t2)}
+.intro-view .intro-panel{margin-top:24px;padding:28px 36px}
+.intro-view .panel-heading{margin-bottom:14px}
+.intro-view .panel-heading h2{font-size:26px}.intro-view .panel-heading p{font-size:16px}
+.rules{margin:14px 0 18px}
+.rules li,.intro-view .rules li{border-color:var(--line);color:var(--t2)}
+.intro-view .rules li{font-size:18px;line-height:1.4;padding:12px 0}
+.rules li strong{color:var(--ink)}
+.rules .ic{color:var(--accent)}
+.mic-check{background:var(--soft)}
+.intro-view .mic-check{font-size:17px;padding:16px 20px}
+.mic-check small,.intro-view .mic-check small{font-size:15px;color:var(--t3)}
+.intro-view .mic-check .control{font-size:16px;padding:11px 16px}
+.meter{background:var(--bar-off);height:7px}.meter i{background:var(--bar)}
+.intro-view #mic-heard,#mic-heard{font-size:15px;color:var(--accent)}
+.intro-view #start-btn{font-size:19px;padding:17px 26px}
+
+/* interview: room heading */
+.room-heading{margin-bottom:16px;align-items:center}
+.room-heading .eyebrow{margin-bottom:6px}
+.room-heading h1{font-size:34px;letter-spacing:-.035em;line-height:1.15;margin-bottom:4px}
+.room-heading p{font-size:16px;color:var(--t3)}
+.room-time{align-self:center;gap:10px;font-size:16px}
+#timer{font-family:Manrope,var(--font);font-size:30px;font-weight:650;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1}
+.room-time #timer.late{color:var(--danger)}
+.room-time button{font-size:15px;padding:10px 14px;background:var(--surface);border-color:var(--line2);border-radius:7px}
+
+/* interview: conversation panel */
+.room-panel-head{font-size:20px}
+.room-panel-head>div{display:flex;align-items:center;gap:8px}
+.room-panel-head strong{font-family:Manrope,var(--font);font-weight:650;letter-spacing:-.02em}
+.room-panel-head .tiny-tag{background:var(--soft);padding:5px 10px;border-radius:6px}
+.agent-stage{padding:2px 0 12px}
+.orb-wrap{width:96px;height:96px;margin-bottom:8px}
+.orb{width:76px;height:76px}
+.orb-glow{background:var(--lime)}
+.orb-wrap.listening .orb{box-shadow:0 0 0 7px var(--soft2),0 0 0 14px var(--soft)}
+.agent-name{font-size:20px}
+.agent-name span{font:600 var(--sm) var(--font);background:var(--soft2);color:var(--accent);padding:2px 7px;border-radius:5px;margin-left:6px}
+.agent-caption{font-size:15px;color:var(--t3);margin-top:4px}
+.waveform{height:22px;margin-top:8px;gap:4px}
+.waveform i{width:3px;background:var(--bar)}
+.question-card{background:var(--soft);border-color:var(--line);padding:18px 22px;border-radius:12px}
+.question-meta{font-size:var(--tag);letter-spacing:.1em;font-weight:650;color:var(--accent);align-items:center}
+.question-meta>span:last-child{font-size:15px;font-weight:600;letter-spacing:0;color:var(--accent);background:var(--soft2);padding:3px 11px;border-radius:99px;white-space:nowrap}
+#level-badge:empty{display:none}
+.question-card>p{font-size:clamp(26px,2vw,36px);font-weight:500;line-height:1.36;letter-spacing:-.015em;margin:12px 0 14px;min-height:2.72em;color:var(--ink)}
+.question-source{font-size:16px;color:var(--t3);border-color:var(--line);gap:8px}
+.question-source #topic-title{color:var(--accent);font-size:17px}
+.question-source button{font-size:15px;color:var(--accent);font-weight:600;white-space:nowrap}
+.voice-controls{border-color:var(--line);gap:10px}
+.control{font-size:16px;padding:11px 16px;background:var(--surface);border-color:var(--line2);border-radius:8px;color:var(--ink)}
+.control.on{background:var(--soft2);border-color:var(--bar)}
+.control span{font-size:17px}
+.control.done{background:var(--btn);border-color:var(--btn);color:var(--btn-ink);font-weight:600}
+.voice-controls>span{font-size:var(--sm);color:var(--t3);text-align:right}
+.thinking{font-size:16px;color:var(--t2)}
+
+/* interview: side column */
+.camera-demo-label{font-size:var(--tag);color:var(--t3)}
+.camera-placeholder strong{font-size:17px}.camera-placeholder small{font-size:var(--sm)}
+.camera-self-label,.camera-rec{font-size:var(--sm)}
+.journey .panel-heading{margin-bottom:18px}
+.journey h2{font-size:20px;margin:0}
+.topic-item{font-size:16px;line-height:1.3;color:var(--t3);margin-bottom:16px;gap:12px}
+.topic-index{width:28px;height:28px;font-size:var(--sm);border-color:var(--line2)}
+.topic-item.active{color:var(--accent);font-weight:650;font-size:18px}
+.topic-item.active .topic-index{background:var(--btn);border-color:var(--btn);color:var(--btn-ink)}
+.topic-item.done .topic-index{background:var(--soft2);color:var(--accent);border-color:var(--soft2)}
+.topic-item small{font-size:var(--sm);color:var(--t3);margin-top:2px}
+.bloom-box{background:var(--soft);padding:16px;margin-top:18px;border-radius:10px}
+.bloom-box strong{font-family:Manrope,var(--font);font-size:24px;font-weight:650;letter-spacing:-.02em;margin-top:4px;color:var(--ink)}
+.bloom-bars{margin:12px 0;gap:6px}
+.bloom-bars i{height:8px;border-radius:4px;background:var(--bar-off)}
+.bloom-bars i.on{background:var(--bar)}
+.bloom-box p{font-size:var(--sm);line-height:1.5;color:var(--t3)}
+.local-note{font-size:var(--sm);line-height:1.55;color:var(--t3);border-color:var(--line2)}
+
+/* interview: transcript */
+.transcript-header h2{font-size:20px}
+.transcript-header h2 span{font:500 var(--sm) var(--font);color:var(--t3);margin-left:10px}
+.transcript-header button{font-size:15px;color:var(--accent);font-weight:600}
+.transcript-entry{font-size:16px;line-height:1.55;border-color:var(--line)}
+.transcript-entry strong{font-size:15px;color:var(--accent)}
+.transcript-entry small{font-size:var(--sm);color:var(--t3);margin-left:9px}
+.transcript-entry p{color:var(--t2);margin-top:3px}
+#answer-form{border-color:var(--line2)}
+textarea{font-size:16px;line-height:1.5;color:var(--ink)}
+textarea::placeholder{color:var(--t3)}
+#answer-form .primary{padding:12px 16px}
+.composer-foot{font-size:var(--sm);color:var(--t3)}
+
+/* ---- A · Refined: same layout, real type scale, demo CTA first ---- */
+.right-stack .demo-card{order:-1}
+.room-grid{grid-template-columns:minmax(380px,1fr) 360px}
+#s-live.view{padding-top:22px}
+/* large screens / projector: step the key elements up, keep the secondary text where it is */
+@media(min-width:1550px){
+  :root{--body:17px;--lg:21px}
+  .step{font-size:20px}.step b{width:38px;height:38px;font-size:17px}.step-line{max-width:90px}
+  .demo-card h3{font-size:28px}.demo-card p{font-size:17px}.demo-card button,.primary{font-size:19px}
+  .preview-card blockquote{font-size:32px}
+  .room-grid{grid-template-columns:minmax(380px,1fr) 420px;gap:26px}
+  .room-heading h1{font-size:42px}.room-heading p{font-size:18px}
+  #timer{font-size:40px}
+  .room-panel-head{font-size:26px}
+  .conversation-panel{padding:26px 28px}
+  .agent-stage{padding:8px 0 20px}
+  .orb-wrap{width:150px;height:150px;margin-bottom:14px}.orb{width:120px;height:120px}
+  .agent-name{font-size:24px}.agent-caption{font-size:17px}
+  .question-card{padding:24px 28px}
+  .question-meta>span:last-child{font-size:18px}
+  .question-source #topic-title{font-size:20px}
+  .control{font-size:18px;padding:13px 20px}
+  .topic-item{font-size:18px}.topic-item.active{font-size:21px}
+  .bloom-box strong{font-size:30px}
+  .intro-view{max-width:1040px}
+  .intro-view .rules li{font-size:21px;padding:15px 0}
+}
+
+}
