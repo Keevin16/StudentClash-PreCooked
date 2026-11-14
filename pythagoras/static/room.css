@@ -316,3 +316,12 @@ textarea::placeholder{color:var(--t3)}
 .brand-logo{display:block;height:36px;width:auto}
 @media(max-width:900px){.brand-logo{height:auto;width:52px}}
 @media(max-width:700px){.brand-logo{height:26px;width:auto}}
+.drop-zone{flex-direction:row;justify-content:flex-start;gap:18px;min-height:0;padding:22px 24px;border:1.5px dashed #98b585;border-radius:12px;background:#fbfcf8;text-align:left}
+.drop-zone:hover,.drop-zone.over{background:#f1f6ea;border-color:#4f7a45}
+.drop-zone .upload-symbol{flex:none;width:52px;height:52px;margin:0;border:0;border-radius:50%;background:#e3eed6;color:#28593d}
+.drop-zone>span.drop-text{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0;font-size:inherit;color:inherit}
+.drop-zone .drop-text strong{font-size:18px;font-weight:600;color:#1e3029}
+.drop-zone .drop-text small{margin:0;text-align:left;font-size:14px;color:#5f6b5a}
+.drop-zone>span.drop-btn{flex:none;padding:11px 18px;border:1px solid #28593d;border-radius:8px;background:#fff;color:#28593d;font-size:15px;font-weight:600;transition:.2s}
+.drop-zone:hover>span.drop-btn{background:#28593d;color:#fff}
+@media(max-width:700px){.drop-zone{flex-wrap:wrap;justify-content:center;text-align:center}.drop-zone>span.drop-text{flex-basis:100%;align-items:center}.drop-zone .drop-text small{text-align:center}}
