@@ -325,3 +325,9 @@ textarea::placeholder{color:var(--t3)}
 .drop-zone>span.drop-btn{flex:none;padding:11px 18px;border:1px solid #28593d;border-radius:8px;background:#fff;color:#28593d;font-size:15px;font-weight:600;transition:.2s}
 .drop-zone:hover>span.drop-btn{background:#28593d;color:#fff}
 @media(max-width:700px){.drop-zone{flex-wrap:wrap;justify-content:center;text-align:center}.drop-zone>span.drop-text{flex-basis:100%;align-items:center}.drop-zone .drop-text small{text-align:center}}
+.upload-grid{align-items:stretch}
+.upload-grid>div:first-child{display:flex;flex-direction:column}.upload-grid #form-card{flex:1}
+.right-stack .preview-card{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-between;gap:12px}
+.right-stack .preview-card .mini-orb{display:none}
+.right-stack .preview-card blockquote{font-size:24px}
+.upload-grid #form-card{display:flex;flex-direction:column}.upload-grid #submit-form{flex:1;display:flex;flex-direction:column}.upload-grid #submit-btn{margin-top:auto}
