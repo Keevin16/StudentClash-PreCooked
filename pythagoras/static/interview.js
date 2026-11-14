@@ -162,7 +162,7 @@
 
   // ---------- local voice: the server tells us when the answer is over ----------
   const localHandlers = {
-    onSpeechStart: () => { if (firstSpeechAt == null) firstSpeechAt = performance.now(); setMic("live", "Listening… I'll notice when you're done"); },
+    onSpeechStart: () => { if (firstSpeechAt == null) firstSpeechAt = performance.now(); setMic("live", "Listening… press I'm done when you've finished"); },
     onTurnEnd: () => {                                 // at once: a short spoken "Okay." covers the thinking time
       listening = false; answerUI("thinking");
       const choices = acks().filter(a => a !== lastAck);
@@ -197,7 +197,7 @@
     $("#voice-note").classList.toggle("hidden", typing || !lv);
     $("#answer").placeholder = lv && !typing ? "Your words appear here after you speak." : "Your answer will appear here as you speak. You can fix it before sending.";
     if (typing) { stopListening(); setMic("off", "Type your answer below"); $("#send-hint").textContent = "Send when you're done"; $("#answer").focus(); }
-    else { $("#send-hint").innerHTML = lv ? 'Nothing to press — or <span class="kbd">Space</span> to send right away' : 'Press <span class="kbd">Space</span> when you\'re done (outside the text box)'; startListening(); }
+    else { $("#send-hint").innerHTML = lv ? 'Press <b>I\'m done</b> or <span class="kbd">Space</span> when you\'ve finished' : 'Press <span class="kbd">Space</span> when you\'re done (outside the text box)'; startListening(); }
   }
 
   // ---------- rendering ----------

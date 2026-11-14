@@ -54,6 +54,7 @@ async def say_into_mic(ws, pcm24, epoch: int):
         for i in range(0, len(x), 320):  # real time: the end-of-turn delay is measured against the audio clock
             await ws.send(x[i:i + 320].tobytes())
             await asyncio.sleep(0.02)
+        await ws.send(json.dumps({"type": "finish"}))  # the "I'm done" button: the server never ends a turn on its own
 
     feeder, t0 = asyncio.ensure_future(feed()), time.monotonic()
     try:

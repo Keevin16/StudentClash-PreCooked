@@ -128,7 +128,8 @@ async def stream(ws: WebSocket, token: str = ""):
     import numpy as np
     from . import audio
     glossary = await asyncio.to_thread(_glossary, token)
-    detector = await asyncio.to_thread(audio.TurnDetector)
+    # the answer ends only when the team presses "I'm done" (a "finish" message): no automatic end on silence
+    detector = await asyncio.to_thread(audio.TurnDetector, silence_s=float("inf"), smart_turn=lambda _: None)
     listening, epoch, announced = False, 0, False
 
     def transcribe(pcm) -> str:

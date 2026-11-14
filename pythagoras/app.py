@@ -240,7 +240,11 @@ DEMO_TEAM = "Team_1"
 
 
 def _demo_assignment(case: dict) -> dict:
-    a = next((x for x in db.list_assignments() if x["title"] == case["title"]), None)
+    same = [x for x in db.list_assignments() if x["title"] == case["title"]]
+    # keep the one that already has a demo plan: an assignment with the same title (e.g. from scripts/smoke.py)
+    # must not take over the demo and change its questions
+    a = next((x for x in same if any(s["student_name"] == DEMO_STUDENT and s["plan"] for s in db.list_submissions(x["id"]))),
+             same[0] if same else None)
     if a is None:
         a = db.create_assignment(case["title"], case["course"], case["description"], case["objectives"])
         folder = db.assignment_dir(a["id"]) / "materials"
