@@ -362,3 +362,4 @@ details.collapse[open] > summary::after { transform: rotate(180deg); }
 .brand-icon span { position: absolute; font-size: 11px; right: 2px; top: -1px; }
 .brand-word { font-size: 24px; } .brand-dot { color: #678d4e; }
 h1 { font-weight: 500; letter-spacing: -.04em; } h2 { font-weight: 650; letter-spacing: -.02em; }
+.brand-logo { display: block; height: 28px; width: auto; }

@@ -313,3 +313,6 @@ textarea::placeholder{color:var(--t3)}
 
 }
 .brand+.nav-label{margin-top:40px;margin-bottom:36px}
+.brand-logo{display:block;height:36px;width:auto}
+@media(max-width:900px){.brand-logo{height:auto;width:52px}}
+@media(max-width:700px){.brand-logo{height:26px;width:auto}}
