@@ -90,6 +90,7 @@
     stage(state === "live" ? "listening" : "");
   }
 
+  function processing(on) { $(".conversation-panel").classList.toggle("processing", on); }   // the answer is being judged
   function setDone(off) { $("#done-btn").disabled = off; $("#send-btn").disabled = off; }
 
   function addEntry(who, text, mine) {                 // the running transcript under the room
@@ -236,6 +237,7 @@
 
   function answerUI(mode) { // input | thinking | error | off
     if (mode === "thinking") setMic("off", "Pythagoras is thinking…");
+    processing(mode === "thinking");
     $("#answer-input").classList.toggle("hidden", mode !== "input");
     $("#answer-thinking").classList.toggle("hidden", mode !== "thinking");
     $("#answer-error").classList.toggle("hidden", mode !== "error");
@@ -285,7 +287,7 @@
     const text = $("#answer").value.trim();
     if (lv && !typing && !text) {                      // spoken answer: close the turn now, the transcript follows
       manualFinish = true;
-      if (lv.finish()) { setMic("off", "Got it…"); return; }
+      if (lv.finish()) { setMic("off", "Got it…"); processing(true); return; }
       manualFinish = false;
     }
     if (!text && !confirm("Send an empty answer (counts as 'I don't know')?")) return;

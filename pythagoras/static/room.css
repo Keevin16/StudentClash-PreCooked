@@ -333,3 +333,12 @@ textarea::placeholder{color:var(--t3)}
 .right-stack .preview-card .mini-orb{position:absolute;right:28px;top:50%;transform:translateY(-50%);margin:0}
 .right-stack .preview-card blockquote{padding-right:72px}
 @media(max-width:1549px){.right-stack .preview-card blockquote{font-size:22px}}
+
+/* after "I'm done": the answer is being transcribed and judged */
+.question-card{position:relative}
+.processing-badge{display:none}
+.processing .processing-badge{display:flex;position:absolute;inset:0;z-index:2;align-items:center;justify-content:center;gap:14px;border-radius:8px;background:rgba(248,250,245,.82);backdrop-filter:blur(2px);color:#275b43;font-size:20px;font-weight:600;animation:processing-in .2s ease-out}
+.processing-badge .spinner{width:24px;height:24px;border-width:3px}
+.processing .orb{animation:breathe 1s ease-in-out infinite}
+.processing .voice-controls{opacity:.45;pointer-events:none}
+@keyframes processing-in{from{opacity:0}}
